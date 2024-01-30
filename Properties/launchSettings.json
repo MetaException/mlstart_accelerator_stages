@@ -4,8 +4,5 @@
       "commandName": "MsixPackage",
       "nativeDebugging": false
     }
-  },
-  "ConnectionStrings": {
-    "DefaultDbConnection": "Host=localhost;Port=5432;Database=mallenom;Username=postgres;Password=4409"
   }
 }

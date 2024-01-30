@@ -27,7 +27,7 @@
 
             <HorizontalStackLayout 
                 Spacing="15"
-                HorizontalOptions="CenterAndExpand">
+                HorizontalOptions="EndAndExpand">
                 
                 <Button
                     x:Name="LoginBtn"

@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using stage3.Model;
 
 namespace stage3;
 
 public partial class MallenomContext : DbContext
 {
-    public MallenomContext()
+    private readonly IConfiguration _config;
+
+    public MallenomContext(IConfiguration config)
     {
+        _config = config;
     }
 
     public MallenomContext(DbContextOptions<MallenomContext> options)
@@ -19,8 +23,7 @@ public partial class MallenomContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=mallenom;Username=postgres;Password=4409");
+        => optionsBuilder.UseNpgsql(_config.GetRequiredSection("ConnectionStrings").GetValue<string>("DbConnectionUrl"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
