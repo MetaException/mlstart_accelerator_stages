@@ -1,7 +1,7 @@
 ﻿using second_stage.Abstract;
 using second_stage.Interface;
 using second_stage.Units;
-using static second_stage.Program;
+using static second_stage.Units.Enums;
 
 namespace second_stage.Subjects
 {

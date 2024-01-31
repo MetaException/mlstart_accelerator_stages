@@ -1,7 +1,9 @@
 ﻿using second_stage.Interface;
 using second_stage.Managers;
 using second_stage.Subjects;
+using second_stage.Units;
 using Serilog;
+using static second_stage.Units.Enums;
 
 //TODO: * использовать iswanttobuy чтобы точно определять что всем известно
 //      * добавить таймаут между действиями
@@ -14,13 +16,6 @@ namespace second_stage
     internal class Program
     {
         private static readonly Random rnd = new Random();
-
-        public enum places
-        {
-            BANK,
-            COMPANY,
-            OUTSIDE
-        }
 
         static void Main(string[] args)
         {
@@ -36,7 +31,7 @@ namespace second_stage
             var otherCitizens = GenerateRandomCitizens(200);
             var comeEarlierCount = 0;
 
-            for (int day = 1; company.GetSharesCount() != 0; day++)
+            for (int day = 1; company.GetSharesCount() > 0; day++)
             {
                 Logger.day = day;
 

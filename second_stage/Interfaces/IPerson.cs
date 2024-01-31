@@ -1,4 +1,4 @@
-﻿using static second_stage.Program;
+﻿using static second_stage.Units.Enums;
 
 namespace second_stage.Interface
 {
