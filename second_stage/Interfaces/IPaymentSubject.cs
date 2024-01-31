@@ -2,7 +2,7 @@
 
 namespace second_stage.Interface
 {
-    interface IPaymentSubject
+    public interface IPaymentSubject
     {
         public List<Share> TakeShares(int count);
 

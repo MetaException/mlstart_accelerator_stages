@@ -5,9 +5,8 @@ using second_stage.Units;
 using Serilog;
 using static second_stage.Units.Enums;
 
-//TODO: * использовать iswanttobuy чтобы точно определять что всем известно
-//      * добавить таймаут между действиями
-//      * добавить класс record
+//TODO: * использовать isKnowAboutShares чтобы точно определять что всем известно и увеличивать кол-во покупателей
+//      * добавить таймаут между действиями (не понял куда пихать)
 //      * переписать говнокод :)
 
 
@@ -22,13 +21,13 @@ namespace second_stage
             Logger.CreateLogger();
 
             var bank = new Bank();
-            var company = new Company(1500);
+            var company = new Company(name: "Общество гигантских растений", sharesCount: 1500);
 
             var shorty = new Person("Коротышка", 100);
-            var dunnoAndGoaty = new Worker("Незнайка и Козлик", 0, company);
-            var miga = new Worker("Мига", 0, company);
+            var dunnoAndGoaty = new Worker("Незнайка и Козлик", company);
+            var miga = new Worker("Мига", company);
 
-            var otherCitizens = GenerateRandomCitizens(200);
+            var otherCitizens = GenerateRandomCitizens(300);
             var comeEarlierCount = 0;
 
             for (int day = 1; company.GetSharesCount() > 0; day++)
@@ -61,7 +60,6 @@ namespace second_stage
                             if (company.GetSharesCount() != 0)
                             {
                                 int countToBuy = rnd.Next(1, 1 + (int)(client.GetMoney() / company.GetSharesPrice()));
-                                TradeManager.TradeShares(company, dunnoAndGoaty, countToBuy);
                                 TradeManager.PerformDeal(dunnoAndGoaty, client, countToBuy);
                                 dunnoAndGoaty.SetBusy(false);
                             }
@@ -74,10 +72,14 @@ namespace second_stage
                 }
 
                 miga.EnterTo(places.COMPANY);
+
                 TradeManager.TradeMoney(dunnoAndGoaty, miga, -1);
+
                 miga.EnterTo(places.OUTSIDE);
                 miga.EnterTo(places.BANK);
+
                 bank.StoreMoney(miga, -1);
+
                 miga.EnterTo(places.OUTSIDE);
             }
         }
@@ -99,6 +101,7 @@ namespace second_stage
             {
                 dontWantToBuy[i].SetWantToBuy(true);
                 dontWantToBuy[i].SetTimeWhenCome(rnd.Next(7, 19));
+                dontWantToBuy[i].SetKnowAboutShares(true);
             }
 
             if (dontWantToBuy.Length == 0)

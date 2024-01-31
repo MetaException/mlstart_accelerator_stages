@@ -11,11 +11,11 @@ namespace second_stage.Subjects
         bool isBusy;
         Company company;
 
-        public Worker(string name, double balance, Company company, places inPlace = places.OUTSIDE, bool isBusy = false)
+        public Worker(string name, Company company, double balance = 0, places inPlace = places.OUTSIDE, bool isBusy = false)
         {
             this.name = name;
             this.balance = balance;
-            this.shares = new List<Share>();
+            this.shares = company.GetShares();
             this.inPlace = inPlace;
             this.isBusy = isBusy;
             this.company = company;

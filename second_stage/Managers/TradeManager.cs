@@ -5,6 +5,8 @@ namespace second_stage.Managers;
 
 static class TradeManager
 {
+    public record Transaction(int day, int hour, string from, string to, int quantity, double sum); // ??
+
     public static void PerformDeal(IPaymentSubject from, IPaymentSubject to, int countToTrade)
     {
         double priceToPay = CalculatePriceSum(from, countToTrade);
@@ -17,7 +19,16 @@ static class TradeManager
         TradeShares(from, to, countToTrade);
         TradeMoney(to, from, priceToPay);
 
-        Log.Information("[День {@dayn}] [Час {@hourn}] {@from_name} продал {@shares_count} акций {@to_name} на сумму {@sum}", Logger.day, Logger.hour, from.GetName(), countToTrade, to.GetName(), priceToPay);
+        Transaction transaction = new Transaction(
+            day: Logger.day,
+            hour: Logger.hour,
+            from: from.GetName(),
+            to: to.GetName(),
+            quantity: countToTrade,
+            sum: priceToPay
+        );
+
+        Log.Information("[День {@dayn}] [Час {@hourn}] {@from_name} продал {@shares_count} акций {@to_name} на сумму {@sum}", transaction.day, transaction.hour, transaction.from, transaction.quantity, transaction.quantity, transaction.sum);
     }
 
     public static void TradeShares(IPaymentSubject from, IPaymentSubject to, int count)

@@ -9,13 +9,13 @@ namespace second_stage.Subjects
         int openingTime;
         int closingTime;
 
-        public Company(int count)
+        public Company(string name, int sharesCount)
         {
             sharesPrice = 100d;
             openingTime = 9;
             closingTime = 19;
-            name = "Общество гигантских растений";
-            shares = Enumerable.Range(1, count).Select(x => new Share(sharesPrice)).ToList();
+            this.name = name;
+            shares = Enumerable.Range(1, sharesCount).Select(x => new Share(sharesPrice)).ToList();
         }
 
         public int GetOpeningTime()

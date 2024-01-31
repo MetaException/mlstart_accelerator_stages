@@ -10,13 +10,23 @@ namespace second_stage.Subjects
         bool isWantToBuy = false;
         bool isKnowAboutShares = false;
 
-        public Person(string name, double balance, bool isWantToBuy = false, places inPlace = places.OUTSIDE)
+        public Person(string name, double balance = 0, bool isWantToBuy = false, places inPlace = places.OUTSIDE)
         {
             this.name = name;
             this.balance = balance;
             this.shares = new List<Share>();
             this.inPlace = inPlace;
             this.isWantToBuy = isWantToBuy;
+        }
+
+        public bool IsKnowAboutShares()
+        {
+            return isKnowAboutShares;
+        }
+
+        public void SetKnowAboutShares(bool knowAboutShares)
+        {
+            isKnowAboutShares = knowAboutShares;
         }
 
         public bool IsWantToBuy()

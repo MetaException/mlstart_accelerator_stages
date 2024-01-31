@@ -21,7 +21,12 @@ namespace second_stage.Abstract
         public void EnterTo(places places)
         {
             inPlace = places;
-            Log.Information("[День {@dayn}] [Час {@hourn}] {@p_name} зашёл в {@place}", Logger.day, Logger.hour, this.name, places.ToString());
+            if (places == places.OUTSIDE)
+            {
+                Log.Information("[День {@dayn}] [Час {@hourn}] {@p_name} удалился", Logger.day, Logger.hour, this.name);
+            }
+            else
+                Log.Information("[День {@dayn}] [Час {@hourn}] {@p_name} зашёл в {@place}", Logger.day, Logger.hour, this.name, places.ToString());
         }
     }
 }
