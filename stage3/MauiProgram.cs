@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using stage3.Pages;
+using stage3.Utils;
 using System.Reflection;
 
 namespace stage3
@@ -33,6 +33,8 @@ namespace stage3
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+
+            DependencyService.RegisterSingleton<DbUtils>(new DbUtils(new MallenomContext(config))); //...
 
             return builder.Build();
         }

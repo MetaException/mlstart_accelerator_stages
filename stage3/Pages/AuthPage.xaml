@@ -32,11 +32,13 @@
                 <Button
                     x:Name="LoginBtn"
                     Text="Авторизация" 
+                    Clicked="LoginBtn_Clicked"
                     HorizontalOptions="Fill" />
 
                 <Button
                     x:Name="RegBtn"
                     Text="Регистрация" 
+                    Clicked="RegBtn_Clicked"
                     HorizontalOptions="Fill" />
             </HorizontalStackLayout>
 

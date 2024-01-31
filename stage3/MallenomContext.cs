@@ -30,7 +30,7 @@ public partial class MallenomContext : DbContext
         modelBuilder.Entity<User>(entity =>
         {
             entity
-                .HasNoKey()
+                ///.HasNoKey()
                 .ToTable("users");
 
             entity.Property(e => e.Id)
