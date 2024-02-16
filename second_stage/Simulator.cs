@@ -14,7 +14,7 @@ namespace second_stage
 
         public static void SimulateDay()
         {
-            var bank = new Bank();
+            var bank = new Bank("Банк", 0, 100);
             var company = new Company(name: "Общество гигантских растений", sharesCount: 1500);
 
             var shorty = new Person("Коротышка", 100);

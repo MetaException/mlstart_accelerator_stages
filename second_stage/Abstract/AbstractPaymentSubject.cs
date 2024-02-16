@@ -8,7 +8,7 @@ namespace second_stage.Abstract
         public double Balance { get { return balance; } set { balance = value; } }
         public string Name { get { return name; } }
         public List<Share> Shares { get { return shares; }}
-        public double SharesPrice { get { return sharesPrice; } }
+        public double SharesPrice { get { return sharesPrice; } set { sharesPrice = value; } }
 
         protected double balance;
         protected List<Share> shares;
@@ -22,7 +22,7 @@ namespace second_stage.Abstract
             return takenShares;
         }
 
-        public void GetMoney(double amount)
+        public void AddMoney(double amount)
         {
             balance += amount;
         }
@@ -38,7 +38,7 @@ namespace second_stage.Abstract
             return amount;
         }
 
-        public void GetShares(List<Share> sharesToAdd)
+        public void AddShares(List<Share> sharesToAdd)
         {
             shares.AddRange(sharesToAdd);
         }

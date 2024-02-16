@@ -9,7 +9,11 @@ namespace second_stage
         static void Main(string[] args)
         {
             Logger.CreateLogger();
-            Simulator.SimulateDay();
+
+            while (true) // По заданию должен быть день сурка
+            {
+                Simulator.SimulateDay();
+            }
         }
     }
 }

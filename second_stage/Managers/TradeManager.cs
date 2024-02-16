@@ -38,7 +38,7 @@ static class TradeManager
             count = from.GetSharesCount();
         }
         var shares = from.TakeShares(count);
-        to.GetShares(shares);
+        to.AddShares(shares);
         Log.Debug("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} акций {@to_name}", Simulator.day,Simulator.hour, from.Name, count, to.Name);
     }
 
@@ -48,7 +48,7 @@ static class TradeManager
             priceToPay = from.Balance;
 
         var money = from.TakeMoney(priceToPay); //...
-        to.GetMoney(money);
+        to.AddMoney(money);
         Log.Debug("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} денег {@to_name}", Simulator.day, Simulator.hour, from.Name, priceToPay, to.Name);
     }
 
