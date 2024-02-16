@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="stage3.Pages.MainPage">
 
-    <Shell.TitleView>
+    <NavigationPage.TitleView>
         <Label Text="Логи" FontSize="Title" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-    </Shell.TitleView>
+    </NavigationPage.TitleView>
 
     <Grid VerticalOptions="FillAndExpand">
         <Grid.RowDefinitions>
