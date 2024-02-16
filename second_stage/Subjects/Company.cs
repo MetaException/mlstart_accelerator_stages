@@ -1,13 +1,15 @@
 ﻿using second_stage.Abstract;
-using second_stage.Interface;
 using second_stage.Units;
 
 namespace second_stage.Subjects
 {
-    class Company : AbstractPaymentSubject, ICompany
+    class Company : AbstractPaymentSubject
     {
-        int openingTime;
-        int closingTime;
+        public int OpeningTime { get { return openingTime; } }
+        public int ClosingTime { get { return closingTime; } }
+
+        private readonly int openingTime;
+        private readonly int closingTime;
 
         public Company(string name, int sharesCount)
         {
@@ -16,16 +18,6 @@ namespace second_stage.Subjects
             closingTime = 19;
             this.name = name;
             shares = Enumerable.Range(1, sharesCount).Select(x => new Share(sharesPrice)).ToList();
-        }
-
-        public int GetOpeningTime()
-        {
-            return openingTime;
-        }
-
-        public int GetClosingTime()
-        {
-            return closingTime;
         }
     }
 }

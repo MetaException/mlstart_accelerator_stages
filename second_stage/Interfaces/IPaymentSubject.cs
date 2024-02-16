@@ -4,22 +4,19 @@ namespace second_stage.Interface
 {
     public interface IPaymentSubject
     {
+        public double Balance { get; set; }
+        public string Name { get; }
+        public List<Share> Shares {get;}
+        public double SharesPrice { get; }
+
         public List<Share> TakeShares(int count);
 
         public void GetMoney(double amount);
-
-        public double GetMoney();
-
-        public List<Share> GetShares();
 
         public int GetSharesCount();
 
         public double TakeMoney(double amount);
 
         public void GetShares(List<Share> sharesToAdd);
-
-        public double GetSharesPrice();
-
-        public string GetName();
     }
 }

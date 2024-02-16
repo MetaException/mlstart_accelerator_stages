@@ -28,7 +28,7 @@ namespace second_stage
             {
                 day = dayi;
                 if (dayi == 1)
-                    shorty.SetWantToBuy(true);
+                    shorty.IsWantToBuy = true;
 
                 GenerateDemand(otherCitizens, comeEarlierCount);
 
@@ -42,18 +42,18 @@ namespace second_stage
                     else if (houri == 19)
                         dunnoAndGoaty.EnterTo(places.OUTSIDE);
 
-                    if (houri >= company.GetOpeningTime() && houri <= company.GetClosingTime())
+                    if (houri >= company.OpeningTime && houri <= company.ClosingTime)
                     {
-                        foreach (var client in wantToBuy.Where(x => x.GetTimeWhenCome() == houri))
+                        foreach (var client in wantToBuy.Where(x => x.HourWhenCome == houri))
                         {
                             client.EnterTo(places.COMPANY);
-                            dunnoAndGoaty.SetBusy(true);
+                            dunnoAndGoaty.IsBusy = true;
 
                             if (company.GetSharesCount() != 0)
                             {
-                                int countToBuy = rnd.Next(1, 1 + (int)(client.GetMoney() / company.GetSharesPrice()));
+                                int countToBuy = rnd.Next(1, 1 + (int)(client.Balance / company.SharesPrice));
                                 TradeManager.PerformDeal(dunnoAndGoaty, client, countToBuy);
-                                dunnoAndGoaty.SetBusy(false);
+                                dunnoAndGoaty.IsBusy = false;
                             }
                             else
                                 Log.Information("[День {@dayn}] Акции распроданы", dayi);
@@ -87,13 +87,13 @@ namespace second_stage
 
         private static void GenerateDemand(List<Person> otherCitizens, int comeEarlierCount)
         {
-            var dontWantToBuy = otherCitizens.Where(x => !x.IsWantToBuy()).ToArray();
+            var dontWantToBuy = otherCitizens.Where(x => !x.IsWantToBuy).ToArray();
 
             for (int i = 0; i < Math.Min(dontWantToBuy.Length / 3 + comeEarlierCount, dontWantToBuy.Length); i++)
             {
-                dontWantToBuy[i].SetWantToBuy(true);
-                dontWantToBuy[i].SetTimeWhenCome(rnd.Next(7, 19));
-                dontWantToBuy[i].SetKnowAboutShares(true);
+                dontWantToBuy[i].IsWantToBuy = true;
+                dontWantToBuy[i].HourWhenCome = rnd.Next(7, 19);
+                dontWantToBuy[i].IsKnowAboutShares = true;
             }
 
             if (dontWantToBuy.Length == 0)
@@ -102,11 +102,11 @@ namespace second_stage
 
         private static List<Person> GetClients(List<Person> otherCitizens, Company company, ref int comeEarlierCount)
         {
-            var wantToBuy = otherCitizens.Where(x => x.IsWantToBuy()).ToList();
+            var wantToBuy = otherCitizens.Where(x => x.IsWantToBuy).ToList();
 
             Log.Information("[День {@dayn}] Количество желающих приобрести акции выросло: {@wcount}", day, wantToBuy.Count());
 
-            var comeEarly = wantToBuy.Where(x => x.GetTimeWhenCome() < company.GetOpeningTime());
+            var comeEarly = wantToBuy.Where(x => x.HourWhenCome < company.OpeningTime);
             comeEarlierCount = comeEarly.Count();
 
             if (comeEarlierCount > 0)

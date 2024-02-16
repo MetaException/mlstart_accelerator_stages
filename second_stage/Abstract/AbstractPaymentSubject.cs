@@ -1,11 +1,17 @@
-﻿using second_stage.Units;
+﻿using second_stage.Interface;
+using second_stage.Units;
 
 namespace second_stage.Abstract
 {
-    public abstract class AbstractPaymentSubject
+    public abstract class AbstractPaymentSubject : IPaymentSubject
     {
-        protected List<Share> shares;
+        public double Balance { get { return balance; } set { balance = value; } }
+        public string Name { get { return name; } }
+        public List<Share> Shares { get { return shares; }}
+        public double SharesPrice { get { return sharesPrice; } }
+
         protected double balance;
+        protected List<Share> shares;
         protected double sharesPrice;
         protected string name;
 
@@ -19,16 +25,6 @@ namespace second_stage.Abstract
         public void GetMoney(double amount)
         {
             balance += amount;
-        }
-
-        public double GetMoney()
-        {
-            return balance;
-        }
-
-        public List<Share> GetShares()
-        {
-            return shares;
         }
 
         public int GetSharesCount()
@@ -45,16 +41,6 @@ namespace second_stage.Abstract
         public void GetShares(List<Share> sharesToAdd)
         {
             shares.AddRange(sharesToAdd);
-        }
-
-        public double GetSharesPrice()
-        {
-            return sharesPrice;
-        }
-
-        public string GetName()
-        {
-            return name;
         }
     }
 }
