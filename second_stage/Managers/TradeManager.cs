@@ -20,8 +20,8 @@ static class TradeManager
         TradeMoney(to, from, priceToPay);
 
         Transaction transaction = new Transaction(
-            day: Logger.day,
-            hour: Logger.hour,
+            day: Simulator.day,
+            hour: Simulator.hour,
             from: from.GetName(),
             to: to.GetName(),
             quantity: countToTrade,
@@ -39,7 +39,7 @@ static class TradeManager
         }
         var shares = from.TakeShares(count);
         to.GetShares(shares);
-        Log.Debug("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} акций {@to_name}", Logger.day, Logger.hour, from.GetName(), count, to.GetName());
+        Log.Debug("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} акций {@to_name}", Simulator.day,Simulator.hour, from.GetName(), count, to.GetName());
     }
 
     public static void TradeMoney(IPaymentSubject from, IPaymentSubject to, double priceToPay)
@@ -49,7 +49,7 @@ static class TradeManager
 
         var money = from.TakeMoney(priceToPay); //...
         to.GetMoney(money);
-        Log.Debug("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} денег {@to_name}", Logger.day, Logger.hour, from.GetName(), priceToPay, to.GetName());
+        Log.Debug("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} денег {@to_name}", Simulator.day, Simulator.hour, from.GetName(), priceToPay, to.GetName());
     }
 
     public static double CalculatePriceSum(IPaymentSubject company, int countToBuy)

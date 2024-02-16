@@ -23,10 +23,10 @@ namespace second_stage.Abstract
             inPlace = places;
             if (places == places.OUTSIDE)
             {
-                Log.Information("[День {@dayn}] [Час {@hourn}] {@p_name} удалился", Logger.day, Logger.hour, this.name);
+                Log.Information("[День {@dayn}] [Час {@hourn}] {@p_name} удалился",Simulator.day, Simulator.hour, this.name);
             }
             else
-                Log.Information("[День {@dayn}] [Час {@hourn}] {@p_name} зашёл в {@place}", Logger.day, Logger.hour, this.name, places.ToString());
+                Log.Information("[День {@dayn}] [Час {@hourn}] {@p_name} зашёл в {@place}", Simulator.day, Simulator.hour, this.name, places.ToString());
         }
     }
 }

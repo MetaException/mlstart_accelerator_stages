@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace stage3.Model;
+﻿namespace stage3.Model;
 
 public partial class User
 {

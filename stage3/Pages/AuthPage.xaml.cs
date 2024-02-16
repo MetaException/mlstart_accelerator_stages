@@ -22,6 +22,8 @@ namespace stage3.Pages
                 {
                     ErrorLabel.TextColor = Colors.Black;
                     ErrorLabel.Text = "Вы успешно авторизовались";
+                    App.Current.MainPage = new NavigationPage(new MainPage());
+                    return;
                 }
                 else
                 {
@@ -48,6 +50,8 @@ namespace stage3.Pages
                 {
                     ErrorLabel.TextColor = Colors.Black;
                     ErrorLabel.Text = "Вы успешно зарегистрировались";
+                    App.Current.MainPage = new NavigationPage(new MainPage());
+                    return;
                 }
             }
             catch (Exception ex)

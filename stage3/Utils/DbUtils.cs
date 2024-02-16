@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging.Abstractions;
-using stage3.Model;
+﻿using stage3.Model;
 
 namespace stage3.Utils
 {

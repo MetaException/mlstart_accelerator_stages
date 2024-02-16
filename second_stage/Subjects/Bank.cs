@@ -40,7 +40,7 @@ namespace second_stage.Subjects
                 balanceMap.Add(name, newVault);
             }
 
-            Log.Information("[День {@dayn}] [Час {@hourn}] {@person_name} сложил {@money_amount} денег в несгораемый шкаф. Всего денег на счёте: {@vault_balance}", Logger.day, Logger.hour, name, balance, balanceMap[name].GetMoney());
+            Log.Information("[День {@dayn}] [Час {@hourn}] {@person_name} сложил {@money_amount} денег в несгораемый шкаф. Всего денег на счёте: {@vault_balance}", Simulator.day, Simulator.hour, name, balance, balanceMap[name].GetMoney());
         }
     }
 }

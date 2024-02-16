@@ -1,19 +1,30 @@
-﻿using Serilog.Events;
+﻿using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 using Serilog.Formatting.Json;
-using Serilog;
+using System.Collections.ObjectModel;
 
 namespace second_stage
 {
-    public static class Logger
+    public class Logger
     {
-        public static int day;
-        public static int hour;
-        public static ILogger logger;
+        public class LogRecord
+        {
+            public string Message { get; set; }
+
+            public LogRecord(string message)
+            {
+                Message = message;
+            }
+        }
+
+        public static readonly ObservableCollection<LogRecord> logEntries = new ObservableCollection<LogRecord>();
 
         public static void CreateLogger()
         {
-            var log = new LoggerConfiguration()
+            Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
+                .WriteTo.Sink(new ListSink(logEntries))
 
                 .WriteTo.File(new JsonFormatter(),
                              "debug.json",
@@ -39,12 +50,25 @@ namespace second_stage
                               "warning.json",
                               restrictedToMinimumLevel: LogEventLevel.Warning)
 
-                // set default minimum level
                 .MinimumLevel.Verbose()
                 .CreateLogger();
-
-            Log.Logger = log;
-            logger = log;
         }
+
+        public class ListSink : ILogEventSink
+        {
+            private readonly ObservableCollection<LogRecord> _logList;
+
+            public ListSink(ObservableCollection<LogRecord> logList)
+            {
+                _logList = logList ?? throw new ArgumentNullException(nameof(logList));
+            }
+
+            public void Emit(LogEvent logEvent)
+            {
+                // Преобразуем логов в строку и добавляем в список
+                _logList.Add(new LogRecord(logEvent.RenderMessage()));
+            }
+        }
+
     }
 }
