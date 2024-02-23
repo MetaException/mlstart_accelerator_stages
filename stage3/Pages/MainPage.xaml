@@ -22,7 +22,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <CollectionView Grid.Row="0" x:Name="logsTable" ItemsLayout="VerticalList" VerticalScrollBarVisibility="Always" ItemsUpdatingScrollMode="KeepScrollOffset">
+            <CollectionView Grid.Row="0" x:Name="logsTable" ItemsSource="{Binding LogsList}" ItemsLayout="VerticalList" VerticalScrollBarVisibility="Always" ItemsUpdatingScrollMode="KeepScrollOffset">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Label Text="{Binding Message}" FontSize="Medium"/>

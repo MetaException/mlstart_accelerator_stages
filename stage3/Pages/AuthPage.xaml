@@ -14,18 +14,21 @@
             Padding="30,0"
             Spacing="25">
 
-            <Label x:Name="ErrorLabel" TextColor="Black" Text="Введите логин и пароль" FontSize="Small" />
+            <Label x:Name="ErrorLabel" Text="{Binding ErrorLabel}" IsVisible="{Binding IsErrorLabelEnabled}" TextColor="Red" FontSize="Small" />
+            <Label x:Name="welcomeLabel" Text="{Binding WelcomeLabelText}" FontSize="Small" />
 
             <Entry
                 x:Name="LoginEntry"
                 MaxLength="20"
-                Placeholder="Логин" />
+                Placeholder="Логин" 
+                Text="{Binding Login}"/>
 
             <Entry
                 x:Name="PasswordEntry"
                 MaxLength="100"
                 Placeholder="Пароль" 
-                IsPassword="True" />
+                IsPassword="True" 
+                Text="{Binding Password}"/>
 
             <HorizontalStackLayout 
                 Spacing="15"
@@ -34,14 +37,16 @@
                 <Button
                     x:Name="LoginBtn"
                     Text="Авторизация" 
-                    Clicked="LoginBtn_Clicked"
-                    HorizontalOptions="Fill" />
+                    Command="{Binding LoginCommand}"
+                    HorizontalOptions="Fill" 
+                    IsEnabled="{Binding IsLoginButtonEnabled}"/>
 
                 <Button
                     x:Name="RegBtn"
                     Text="Регистрация" 
-                    Clicked="RegBtn_Clicked"
-                    HorizontalOptions="Fill" />
+                    Command="{Binding RegisterCommand}"
+                    HorizontalOptions="Fill" 
+                    IsEnabled="{Binding IsRegisterButtonEnabled}"/>
             </HorizontalStackLayout>
 
         </VerticalStackLayout>

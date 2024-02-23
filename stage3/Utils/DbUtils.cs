@@ -1,4 +1,5 @@
-﻿using stage3.Model;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using stage3.Model;
 
 namespace stage3.Utils
 {
@@ -10,6 +11,11 @@ namespace stage3.Utils
         public DbUtils(MallenomContext context)
         {
             _context = context;
+        }
+
+        public Task<bool> CheckDbConnection()
+        {
+            return _context.Database.CanConnectAsync();
         }
 
         public async Task<bool> AuthorizeUser(string login, string password)

@@ -1,26 +1,13 @@
-﻿using second_stage;
+﻿using stage3.ViewModels;
 
 namespace stage3.Pages
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage()
+        public MainPage(MainPageViewModel viewModel)
         {
             InitializeComponent();
-
-            StartLogger();
-            RunSimulator();
-        }
-
-        private async Task StartLogger()
-        {
-            Logger.CreateLogger();
-            logsTable.ItemsSource = Logger.logEntries;
-        }
-
-        private async Task RunSimulator()
-        {
-            await Task.Run(() => Simulator.SimulateDay());
+            this.BindingContext = viewModel;
         }
     }
 

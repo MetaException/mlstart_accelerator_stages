@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using stage3.Pages;
 using stage3.Utils;
+using stage3.ViewModels;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace stage3
 {
@@ -34,7 +37,14 @@ namespace stage3
             builder.Logging.AddDebug();
 #endif
 
-            DependencyService.RegisterSingleton<DbUtils>(new DbUtils(new MallenomContext(config))); //...
+            builder.Services.AddSingleton<MallenomContext>(new MallenomContext(config));
+            builder.Services.AddSingleton<DbUtils>();
+
+            builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<MainPageViewModel>();
+
+            builder.Services.AddTransient<AuthPage>();
+            builder.Services.AddTransient<AuthPageViewModel>();
 
             return builder.Build();
         }
