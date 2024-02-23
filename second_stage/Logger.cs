@@ -27,28 +27,34 @@ namespace second_stage
                 .WriteTo.Sink(new ListSink(logEntries))
 
                 .WriteTo.File(new JsonFormatter(),
-                             "debug.json",
-                              restrictedToMinimumLevel: LogEventLevel.Debug)
+                              "debug.json",
+                              restrictedToMinimumLevel: LogEventLevel.Debug,
+                              rollingInterval: RollingInterval.Hour)
 
                 .WriteTo.File(new JsonFormatter(),
                               "error.json",
-                              restrictedToMinimumLevel: LogEventLevel.Error)
+                              restrictedToMinimumLevel: LogEventLevel.Error,
+                              rollingInterval: RollingInterval.Hour)
 
                 .WriteTo.File(new JsonFormatter(),
                               "fatal.json",
-                              restrictedToMinimumLevel: LogEventLevel.Fatal)
+                              restrictedToMinimumLevel: LogEventLevel.Fatal,
+                              rollingInterval: RollingInterval.Hour)
 
                 .WriteTo.File(new JsonFormatter(),
                               "info.json",
-                              restrictedToMinimumLevel: LogEventLevel.Information)
+                              restrictedToMinimumLevel: LogEventLevel.Information,
+                              rollingInterval: RollingInterval.Hour)
 
                 .WriteTo.File(new JsonFormatter(),
                               "verbose.json",
-                              restrictedToMinimumLevel: LogEventLevel.Verbose)
+                              restrictedToMinimumLevel: LogEventLevel.Verbose,
+                              rollingInterval: RollingInterval.Hour)
 
                 .WriteTo.File(new JsonFormatter(),
                               "warning.json",
-                              restrictedToMinimumLevel: LogEventLevel.Warning)
+                              restrictedToMinimumLevel: LogEventLevel.Warning,
+                              rollingInterval: RollingInterval.Hour)
 
                 .MinimumLevel.Verbose()
                 .CreateLogger();
