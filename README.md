@@ -4,12 +4,10 @@
 
 ## 3й этап
 Проект stage3 - 3й этап. Интерфейс построен с использованием .NET MAUI. Точка входа - метод CreateMauiApp(), в классе MauiProgram. Работает с БД postgresql, с помощью Entity Framework Core.
-Файл конфигурации со строкой подключения к БД - appSettings.json лежит в папке Properties.
+Файл конфигурации со строкой подключения к БД - appSettings.json лежит в папке Properties. Паттерн - MVVM. Для этого используется библиотека: CommunityToolkit.Mvvm (https://www.nuget.org/packages/CommunityToolkit.Mvvm).
 
 ## Детали
 Разрабатывал на windows 11, .NET 8.
-
-Проект готов +- на 40% из-за нехватки времени (пары в вузе).
 
 TODO:
 * Перепись кода 2-го этапа;
