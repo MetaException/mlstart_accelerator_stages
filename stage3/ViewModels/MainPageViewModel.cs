@@ -23,6 +23,10 @@ public partial class MainPageViewModel : ObservableObject
 
     private async Task RunSimulator()
     {
-        await Task.Run(() => Simulator.SimulateDay());
+        while (true)
+        {
+            await Task.Run(() => Simulator.SimulateDay());
+            await Task.Delay(TimeSpan.FromSeconds(1)); // По заданию цикл должен идти бесконечно
+        }
     }
 }
