@@ -1,7 +1,7 @@
-﻿using second_stage.Interface;
-using static second_stage.Units.Enums;
+﻿using cmd.Interface;
+using static cmd.Units.Enums;
 
-namespace second_stage.Interfaces
+namespace cmd.Interfaces
 {
     public interface IPerson : IPaymentSubject
     {

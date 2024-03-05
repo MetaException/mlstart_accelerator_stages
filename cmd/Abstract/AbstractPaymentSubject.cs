@@ -1,7 +1,7 @@
-﻿using second_stage.Interface;
-using second_stage.Units;
+﻿using cmd.Interface;
+using cmd.Units;
 
-namespace second_stage.Abstract
+namespace cmd.Abstract
 {
     public abstract class AbstractPaymentSubject : IPaymentSubject
     {

@@ -1,7 +1,7 @@
-﻿using second_stage.Interface;
+﻿using cmd.Interface;
 using Serilog;
 
-namespace second_stage.Managers;
+namespace cmd.Managers;
 
 static class TradeManager
 {

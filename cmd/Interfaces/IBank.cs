@@ -1,6 +1,6 @@
-﻿using second_stage.Interface;
+﻿using cmd.Interface;
 
-namespace second_stage.Interfaces
+namespace cmd.Interfaces
 {
     public interface IBank : IPaymentSubject
     {

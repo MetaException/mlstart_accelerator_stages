@@ -1,8 +1,8 @@
-﻿using second_stage.Interfaces;
+﻿using cmd.Interfaces;
 using Serilog;
-using static second_stage.Units.Enums;
+using static cmd.Units.Enums;
 
-namespace second_stage.Abstract
+namespace cmd.Abstract
 {
     abstract class AbstractPerson : AbstractPaymentSubject, IPerson
     {

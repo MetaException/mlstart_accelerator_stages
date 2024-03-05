@@ -4,7 +4,7 @@ using Serilog.Events;
 using Serilog.Formatting.Json;
 using System.Collections.ObjectModel;
 
-namespace second_stage
+namespace cmd
 {
     public class Logger
     {

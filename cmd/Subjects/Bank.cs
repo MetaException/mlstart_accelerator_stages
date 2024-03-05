@@ -1,7 +1,7 @@
-﻿using second_stage.Abstract;
-using second_stage.Units;
+﻿using cmd.Abstract;
+using cmd.Units;
 
-namespace second_stage.Subjects
+namespace cmd.Subjects
 {
     internal class Bank : AbstractBank
     {

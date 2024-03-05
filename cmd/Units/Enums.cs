@@ -1,4 +1,4 @@
-﻿namespace second_stage.Units
+﻿namespace cmd.Units
 {
     public static class Enums
     {

@@ -1,6 +1,6 @@
-﻿using second_stage.Units;
+﻿using cmd.Units;
 
-namespace second_stage.Interface
+namespace cmd.Interface
 {
     public interface IPaymentSubject
     {

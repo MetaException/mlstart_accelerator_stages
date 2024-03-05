@@ -80,7 +80,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\second_stage\second_stage.csproj" />
+	  <ProjectReference Include="..\cmd\cmd.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

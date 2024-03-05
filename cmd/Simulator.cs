@@ -1,9 +1,9 @@
-﻿using second_stage.Managers;
-using second_stage.Subjects;
+﻿using cmd.Managers;
+using cmd.Subjects;
 using Serilog;
-using static second_stage.Units.Enums;
+using static cmd.Units.Enums;
 
-namespace second_stage
+namespace cmd
 {
     public static class Simulator
     {

@@ -2,7 +2,7 @@
 //      * добавить таймаут между действиями (не понял куда пихать)
 //      * переписать говнокод :)
 
-namespace second_stage
+namespace cmd
 {
     public class Program
     {

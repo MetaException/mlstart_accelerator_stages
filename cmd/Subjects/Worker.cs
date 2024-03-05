@@ -1,7 +1,7 @@
-﻿using second_stage.Abstract;
-using static second_stage.Units.Enums;
+﻿using cmd.Abstract;
+using static cmd.Units.Enums;
 
-namespace second_stage.Subjects
+namespace cmd.Subjects
 {
     class Worker : AbstractPerson
     {

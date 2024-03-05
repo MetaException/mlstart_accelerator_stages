@@ -1,9 +1,9 @@
-﻿using second_stage.Abstract;
-using second_stage.Units;
+﻿using cmd.Abstract;
+using cmd.Units;
 using Serilog;
-using static second_stage.Units.Enums;
+using static cmd.Units.Enums;
 
-namespace second_stage.Subjects
+namespace cmd.Subjects
 {
     class Person : AbstractPerson
     {

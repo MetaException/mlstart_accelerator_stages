@@ -1,9 +1,9 @@
-﻿using second_stage.Interface;
-using second_stage.Interfaces;
-using second_stage.Managers;
+﻿using cmd.Interface;
+using cmd.Interfaces;
+using cmd.Managers;
 using Serilog;
 
-namespace second_stage.Abstract
+namespace cmd.Abstract
 {
     abstract class AbstractBank : AbstractPaymentSubject, IBank
     {

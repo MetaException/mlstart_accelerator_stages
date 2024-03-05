@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using second_stage;
+using cmd;
 using System.Collections.ObjectModel;
 
 namespace client.ViewModels;
