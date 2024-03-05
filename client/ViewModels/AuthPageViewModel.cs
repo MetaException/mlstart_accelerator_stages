@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using stage3.Pages;
-using stage3.Utils;
+using client.Pages;
+using client.Utils;
 
-namespace stage3.ViewModels;
+namespace client.ViewModels;
 
 public partial class AuthPageViewModel : ObservableObject
 {
@@ -66,9 +66,7 @@ public partial class AuthPageViewModel : ObservableObject
             bool isAuthorized = await _dbUtils.AuthorizeUser(Login, Password);
             if (isAuthorized)
             {
-                // DependencyService.Get<INavigationService>().NavigateToMainPage(); TODO
-                //App.Current.MainPage = new NavigationPage(new MainPage());
-                await Shell.Current.GoToAsync("//MainPage");
+                await Shell.Current.GoToAsync("MainPage");
                 return;
             }
             else
@@ -100,8 +98,7 @@ public partial class AuthPageViewModel : ObservableObject
             bool isRegistered = await _dbUtils.RegisterNewUser(Login, Password);
             if (isRegistered)
             {
-                //App.Current.MainPage = new NavigationPage(new MainPage());
-                await Shell.Current.GoToAsync("//MainPage");
+                await Shell.Current.GoToAsync("MainPage");
                 return;
             }
         }

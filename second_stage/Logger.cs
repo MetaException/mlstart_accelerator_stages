@@ -26,33 +26,27 @@ namespace second_stage
                 .WriteTo.Console()
                 .WriteTo.Sink(new ListSink(logEntries))
 
-                .WriteTo.File(new JsonFormatter(),
-                              "debug.json",
+                .WriteTo.File("debug.json",
                               restrictedToMinimumLevel: LogEventLevel.Debug,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File(new JsonFormatter(),
-                              "error.json",
+                .WriteTo.File("error.json",
                               restrictedToMinimumLevel: LogEventLevel.Error,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File(new JsonFormatter(),
-                              "fatal.json",
+                .WriteTo.File("fatal.json",
                               restrictedToMinimumLevel: LogEventLevel.Fatal,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File(new JsonFormatter(),
-                              "info.json",
+                .WriteTo.File("info.json",
                               restrictedToMinimumLevel: LogEventLevel.Information,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File(new JsonFormatter(),
-                              "verbose.json",
+                .WriteTo.File("verbose.json",
                               restrictedToMinimumLevel: LogEventLevel.Verbose,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File(new JsonFormatter(),
-                              "warning.json",
+                .WriteTo.File("warning.json",
                               restrictedToMinimumLevel: LogEventLevel.Warning,
                               rollingInterval: RollingInterval.Hour)
 

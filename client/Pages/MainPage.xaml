@@ -1,11 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="stage3.Pages.MainPage">
+             x:Class="client.Pages.MainPage">
 
-    <NavigationPage.TitleView>
+    <Shell.TitleView>
         <Label Text="Логи" FontSize="Title" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-    </NavigationPage.TitleView>
+    </Shell.TitleView>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
 
     <Grid VerticalOptions="FillAndExpand">
         <Grid.RowDefinitions>

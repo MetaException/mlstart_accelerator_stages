@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using stage3.Pages;
-using stage3.Utils;
-using stage3.ViewModels;
+using client.Pages;
+using client.Utils;
+using client.ViewModels;
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace stage3
+namespace client
 {
     public static class MauiProgram
     {
@@ -40,11 +39,11 @@ namespace stage3
             builder.Services.AddSingleton<MallenomContext>(new MallenomContext(config));
             builder.Services.AddSingleton<DbUtils>();
 
-            builder.Services.AddTransient<MainPage>();
-            builder.Services.AddTransient<MainPageViewModel>();
-
             builder.Services.AddTransient<AuthPage>();
             builder.Services.AddTransient<AuthPageViewModel>();
+
+            builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<MainPageViewModel>();
 
             return builder.Build();
         }

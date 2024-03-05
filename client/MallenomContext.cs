@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using stage3.Model;
+using client.Model;
 
-namespace stage3;
+namespace client;
 
 public partial class MallenomContext : DbContext
 {

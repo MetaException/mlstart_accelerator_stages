@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
-using stage3.Model;
+using client.Model;
 
-namespace stage3.Utils
+namespace client.Utils
 {
     public class DbUtils
     {

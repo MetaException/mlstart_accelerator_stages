@@ -1,4 +1,4 @@
-﻿namespace stage3
+﻿namespace client
 {
     public partial class App : Application
     {

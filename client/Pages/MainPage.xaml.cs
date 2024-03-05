@@ -1,6 +1,6 @@
-﻿using stage3.ViewModels;
+﻿using client.ViewModels;
 
-namespace stage3.Pages
+namespace client.Pages
 {
     public partial class MainPage : ContentPage
     {

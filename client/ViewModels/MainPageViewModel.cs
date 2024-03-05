@@ -2,14 +2,14 @@
 using second_stage;
 using System.Collections.ObjectModel;
 
-namespace stage3.ViewModels;
+namespace client.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject
 {
     public MainPageViewModel()
     {
         _ = StartLogger();
-        _ = RunSimulator();
+        //_ = RunSimulator();
     }
 
     [ObservableProperty]

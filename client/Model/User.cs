@@ -1,4 +1,4 @@
-﻿namespace stage3.Model;
+﻿namespace client.Model;
 
 public partial class User
 {
