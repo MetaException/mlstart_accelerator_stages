@@ -1,15 +1,11 @@
-using server.Utils;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Json;
-using System.Reflection;
-using static server.Simulator.Logger;
-using server.Simulator;
 using Microsoft.EntityFrameworkCore;
 using server.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNet.Identity;
+using static cmd.Logger;
+using cmd;
 
 namespace server
 {
