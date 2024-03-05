@@ -21,42 +21,36 @@ namespace server
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug)
                 .WriteTo.File(
-                    new JsonFormatter(),
                     "..\\logs\\debug-.json",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Error)
                 .WriteTo.File(
-                    new JsonFormatter(),
                     "..\\logs\\error-.json",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Fatal)
                 .WriteTo.File(
-                    new JsonFormatter(),
                     "..\\logs\\fatal-.json",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Information)
                 .WriteTo.File(
-                    new JsonFormatter(),
                     "..\\logs\\info-.json",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Verbose)
                 .WriteTo.File(
-                    new JsonFormatter(),
                     "..\\logs\\verbose-.json",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Warning)
                 .WriteTo.File(
-                    new JsonFormatter(),
                     "..\\logs\\warning-.json",
                     rollingInterval: RollingInterval.Hour))
 
@@ -89,7 +83,7 @@ namespace server
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            //_ = app.Services.GetRequiredService<Simulator.Simulator>().SimulateLoop();
+            _ = app.Services.GetRequiredService<Simulator>().SimulateLoop();
 
             app.Run();
         }
@@ -99,10 +93,10 @@ namespace server
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddSingleton<Simulator.Simulator>(serviceProvider =>
+            builder.Services.AddSingleton<Simulator>(serviceProvider =>
             {
-                var logger = serviceProvider.GetRequiredService<ILogger<Simulator.Simulator>>();
-                return new Simulator.Simulator(logger);
+                var logger = serviceProvider.GetRequiredService<ILogger<Simulator>>();
+                return new Simulator(logger);
             });
 
             builder.Configuration.AddJsonFile("appsettings.json");
@@ -110,6 +104,7 @@ namespace server
             builder.Services.AddDbContext<MallenomContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionUrl")));
 
+            /*
             //builder.Services.AddScoped<DbUtils>();
 
             // https://learn.microsoft.com/ru-ru/aspnet/core/security/authorization/secure-data?view=aspnetcore-8.0
@@ -126,6 +121,7 @@ namespace server
                     //.RequireAuthenticatedUser()
                     //.Build();
             });
+            */
 
             //private readonly SignInManager<LoginModel> _signInManager;
             //private readonly UserManager<LoginModel> _userManager;

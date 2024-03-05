@@ -1,21 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using client.Pages;
-using client.Utils;
 
 namespace client.ViewModels;
 
 public partial class AuthPageViewModel : ObservableObject
 {
-    private readonly DbUtils _dbUtils;
+    //private readonly DbUtils _dbUtils;
 
-    public AuthPageViewModel(DbUtils dbUtils)
+    public AuthPageViewModel()
     {
-        _dbUtils = dbUtils;
+        //_dbUtils = dbUtils;
         LoginCommand = new RelayCommand(async () => await LoginAsync());
         RegisterCommand = new RelayCommand(async () => await RegisterAsync());
 
-        _ = CheckDbConnection();
+        //_ = CheckDbConnection();
     }
 
     [ObservableProperty]
@@ -44,7 +42,7 @@ public partial class AuthPageViewModel : ObservableObject
 
     private async Task<bool> CheckDbConnection()
     {
-        if (!await _dbUtils.CheckDbConnection())
+        //if (!await _dbUtils.CheckDbConnection())
         {
             IsErrorLabelEnabled = true;
             ErrorLabel = "Ошибка подключения к БД";
@@ -63,7 +61,7 @@ public partial class AuthPageViewModel : ObservableObject
         try
         {
             IsLoginButtonEnabled = false;
-            bool isAuthorized = await _dbUtils.AuthorizeUser(Login, Password);
+            bool isAuthorized = false; //await _dbUtils.AuthorizeUser(Login, Password);
             if (isAuthorized)
             {
                 await Shell.Current.GoToAsync("MainPage");
@@ -95,7 +93,7 @@ public partial class AuthPageViewModel : ObservableObject
         try
         {
             IsRegisterButtonEnabled = false;
-            bool isRegistered = await _dbUtils.RegisterNewUser(Login, Password);
+            bool isRegistered = false;//await _dbUtils.RegisterNewUser(Login, Password);
             if (isRegistered)
             {
                 await Shell.Current.GoToAsync("MainPage");
