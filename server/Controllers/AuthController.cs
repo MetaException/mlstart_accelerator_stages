@@ -26,14 +26,14 @@ namespace server.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] UserModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
+            var result = await _signInManager.PasswordSignInAsync(model.Login, model.Password, true, false);
 
             if (result.Succeeded)
             {
                 // Пользователь успешно аутентифицирован
-                return Ok(new { Token = GenerateToken(model.UserName) });
+                return Ok(new { Token = GenerateToken(model.Login) });
             }
             else
             {
@@ -45,7 +45,7 @@ namespace server.Controllers
         private string GenerateToken(string username)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("your-secret-key"); //var key = Environment.GetEnvironmentVariable("YOUR_SECRET_KEY");
+            var key = Encoding.ASCII.GetBytes("CCEA5D06F64497D9CCB548B70B024ASGESGHES5H50"); 
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -64,17 +64,26 @@ namespace server.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] LoginModel model)
+        public async Task<IActionResult> Register([FromBody] UserModel model)
         {
-            var user = new LoginModel { UserName = model.UserName, Password = model.Password };
+            var passwordHasher = new PasswordHasher<IdentityUser>();
 
-            _userManager.UserValidators.Clear();
-            var result = await _userManager.CreateAsync(user);
+            var localUser = new LoginModel { UserName = model.Login, PasswordHash = model.Password};
+            //localUser.PasswordHash = passwordHasher.HashPassword(localUser, model.Password);
+
+            //Сделать проверку на то что такого пользователя ещё нет
+
+            if (await _userManager.FindByNameAsync(localUser.UserName) is not null)
+            {
+                return Conflict("Account is already exists");
+            }
+
+            var result = await _userManager.CreateAsync(localUser, model.Password);
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return Ok(new { Token = GenerateToken(model.UserName) });
+                await _signInManager.SignInAsync(localUser, isPersistent: false);
+                return Ok(new { Token = GenerateToken(model.Login) });
             }
             else
             {

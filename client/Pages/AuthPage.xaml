@@ -14,8 +14,8 @@
             Padding="30,0"
             Spacing="25">
 
-            <Label x:Name="ErrorLabel" Text="{Binding ErrorLabel}" IsVisible="{Binding IsErrorLabelEnabled}" TextColor="Red" FontSize="Small" />
             <Label x:Name="welcomeLabel" Text="{Binding WelcomeLabelText}" FontSize="Small" />
+            <Label x:Name="ErrorLabel" Text="{Binding ErrorLabel}" IsVisible="{Binding IsErrorLabelEnabled}" TextColor="Red" FontSize="Small" />
 
             <Entry
                 x:Name="LoginEntry"

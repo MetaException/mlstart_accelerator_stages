@@ -17,28 +17,6 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     public ObservableCollection<Logger.LogRecord> _logsList;
 
-    private async Task test()
-    {
-        using (var client = new HttpClient())
-        {
-            var registerModel = new User
-            {
-                Login = "newuser",
-                Password = "password123"
-            };
-
-            var response = await client.PostAsJsonAsync("https://localhost:7197/api/auth/register", registerModel);
-
-            if (response.IsSuccessStatusCode)
-            {
-                //var result = await response.Content.ReadAsAsync<YourTokenResponseModel>();
-            }
-            else
-            {
-            }
-        }
-    }
-
     private async Task StartLogger()
     {
         Logger.CreateLogger();

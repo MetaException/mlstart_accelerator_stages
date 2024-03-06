@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using client.Pages;
 using client.ViewModels;
 using System.Reflection;
+using client.Utils;
 
 namespace client
 {
@@ -35,8 +36,7 @@ namespace client
             builder.Logging.AddDebug();
 #endif
 
-            builder.Services.AddSingleton<MallenomContext>(new MallenomContext(config));
-            //builder.Services.AddSingleton<DbUtils>();
+            builder.Services.AddSingleton<NetUtils>();
 
             builder.Services.AddTransient<AuthPage>();
             builder.Services.AddTransient<AuthPageViewModel>();

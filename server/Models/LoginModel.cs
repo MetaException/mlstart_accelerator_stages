@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace server.Models;
 
-public partial class LoginModel
+public partial class LoginModel : IdentityUser<int>
 {
-    public int Id { get; set; }
-    public string UserName { get; set; }
 
-    public string Password { get; set; }
 }

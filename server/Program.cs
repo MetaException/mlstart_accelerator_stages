@@ -6,6 +6,7 @@ using server.Models;
 using Microsoft.AspNetCore.Identity;
 using static cmd.Logger;
 using cmd;
+using Microsoft.Extensions.Options;
 
 namespace server
 {
@@ -83,7 +84,7 @@ namespace server
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            _ = app.Services.GetRequiredService<Simulator>().SimulateLoop();
+            //_ = app.Services.GetRequiredService<Simulator>().SimulateLoop();
 
             app.Run();
         }
@@ -104,29 +105,36 @@ namespace server
             builder.Services.AddDbContext<MallenomContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionUrl")));
 
-            /*
             //builder.Services.AddScoped<DbUtils>();
 
             // https://learn.microsoft.com/ru-ru/aspnet/core/security/authorization/secure-data?view=aspnetcore-8.0
+            builder.Services.AddDefaultIdentity<LoginModel>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 1;
+            })
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<MallenomContext>();
+
+            /*
             builder.Services.AddIdentity<LoginModel, IdentityRole>(option =>
             {
                 option.SignIn.RequireConfirmedAccount = true;
             })
                 //.AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MallenomContext>();
+            */
 
+            /*
             builder.Services.AddAuthorization(options =>
             {
                 //options.FallbackPolicy = new AuthorizationPolicyBuilder()
                     //.RequireAuthenticatedUser()
                     //.Build();
-            });
-            */
-
-            //private readonly SignInManager<LoginModel> _signInManager;
-            //private readonly UserManager<LoginModel> _userManager;
-            //builder.Services.AddScoped<SignInManager<LoginModel>>();
-            //builder.Services.AddScoped<UserManager<LoginModel>>();
+            });*/
         }
     }
 }

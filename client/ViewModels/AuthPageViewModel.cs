@@ -1,19 +1,19 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using client.Utils;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace client.ViewModels;
 
 public partial class AuthPageViewModel : ObservableObject
 {
-    //private readonly DbUtils _dbUtils;
-
+    private readonly NetUtils _netUtils;
     public AuthPageViewModel()
     {
-        //_dbUtils = dbUtils;
+        _netUtils = Application.Current.Handler.MauiContext.Services.GetService<NetUtils>();
         LoginCommand = new RelayCommand(async () => await LoginAsync());
         RegisterCommand = new RelayCommand(async () => await RegisterAsync());
 
-        //_ = CheckDbConnection();
+        _ = CheckServerConnection();
     }
 
     [ObservableProperty]
@@ -40,12 +40,12 @@ public partial class AuthPageViewModel : ObservableObject
     public RelayCommand LoginCommand { get; }
     public RelayCommand RegisterCommand { get; }
 
-    private async Task<bool> CheckDbConnection()
+    private async Task<bool> CheckServerConnection()
     {
-        //if (!await _dbUtils.CheckDbConnection())
+        if (!await _netUtils.CheckServerConnection())
         {
             IsErrorLabelEnabled = true;
-            ErrorLabel = "Ошибка подключения к БД";
+            ErrorLabel = "Ошибка подключения к Серверу";
             return false;
         }
         return true;
@@ -53,15 +53,17 @@ public partial class AuthPageViewModel : ObservableObject
 
     private async Task LoginAsync()
     {
-        if (!await CheckDbConnection())
+        if (!await CheckServerConnection())
         {
             return;
         }
 
+        IsErrorLabelEnabled = false;
+
         try
         {
             IsLoginButtonEnabled = false;
-            bool isAuthorized = false; //await _dbUtils.AuthorizeUser(Login, Password);
+            bool isAuthorized = await _netUtils.Login(Login, Password);
             if (isAuthorized)
             {
                 await Shell.Current.GoToAsync("MainPage");
@@ -69,11 +71,14 @@ public partial class AuthPageViewModel : ObservableObject
             }
             else
             {
-                WelcomeLabelText = "Неверный логин или пароль";
+                IsErrorLabelEnabled = true;
+                ErrorLabel = "Неверный логин или пароль";
             }
+            // Выводить также и другие ошибки
         }
         catch (Exception ex)
         {
+            IsErrorLabelEnabled = true;
             ErrorLabel = ex.Message;
         }
         finally
@@ -85,7 +90,7 @@ public partial class AuthPageViewModel : ObservableObject
     // TODO: Отедльная страница регистрации
     private async Task RegisterAsync() 
     {
-        if (!await CheckDbConnection())
+        if (!await CheckServerConnection())
         {
             return;
         }
@@ -93,7 +98,7 @@ public partial class AuthPageViewModel : ObservableObject
         try
         {
             IsRegisterButtonEnabled = false;
-            bool isRegistered = false;//await _dbUtils.RegisterNewUser(Login, Password);
+            bool isRegistered = await _netUtils.Register(Login, Password);
             if (isRegistered)
             {
                 await Shell.Current.GoToAsync("MainPage");
@@ -102,6 +107,7 @@ public partial class AuthPageViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+            IsErrorLabelEnabled = true;
             ErrorLabel = ex.Message;
         }
         finally
