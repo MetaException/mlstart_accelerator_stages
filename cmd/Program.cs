@@ -1,9 +1,4 @@
-﻿//TODO: * использовать isKnowAboutShares чтобы точно определять что всем известно и увеличивать кол-во покупателей
-//      * добавить таймаут между действиями (не понял куда пихать)
-//      * переписать говнокод :)
-
-using Microsoft.Extensions.Logging;
-using Serilog;
+﻿//      * добавить таймаут между действиями (не понял куда пихать)
 
 namespace cmd
 {
@@ -13,11 +8,7 @@ namespace cmd
         {
             Logger.CreateLogger();
 
-            var loggerFactory = new LoggerFactory().AddSerilog(Log.Logger);
-
-            var logger = loggerFactory.CreateLogger<Simulator>();
-
-            var simulator = new Simulator(logger);
+            var simulator = new Simulator();
 
             while (true) // По заданию должен быть день сурка
             {

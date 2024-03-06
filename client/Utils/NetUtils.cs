@@ -1,4 +1,5 @@
 ﻿using client.Model;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http.Json;
 using System.Net.NetworkInformation;
@@ -75,6 +76,28 @@ public class NetUtils
         catch
         {
             return false;
+        }
+    }
+
+    public async Task<ObservableCollection<LogRecord>> GetDataAsync()
+    {
+        try
+        {
+            var response = await _client.GetAsync("api/data");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var a = await response.Content.ReadFromJsonAsync<ObservableCollection<LogRecord>>();
+                return a;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch
+        {
+            return null;
         }
     }
 }

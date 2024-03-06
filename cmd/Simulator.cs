@@ -13,11 +13,9 @@ public class Simulator
     public static int day;
     public static int hour;
 
-    private readonly ILogger<Simulator> _logger;
-
-    public Simulator(ILogger<Simulator> logger)
+    public Simulator()
     {
-        _logger = logger;
+        Logger.CreateLogger();
     }
 
     public void SimulateDay()
@@ -64,7 +62,7 @@ public class Simulator
                             dunnoAndGoaty.IsBusy = false;
                         }
                         else
-                            Log.Information("[День {@dayn}] Акции распроданы", dayi);
+                            Logger.logger.LogInformation("[День {@dayn}] Акции распроданы", dayi);
 
                         client.EnterTo(places.OUTSIDE);
                     }
@@ -105,20 +103,20 @@ public class Simulator
         }
 
         if (dontWantToBuy.Length == 0)
-            Log.Information("[День {@dayn}] Всем в городе стало известно про акции", day);
+            Logger.logger.LogInformation("[День {@dayn}] Всем в городе стало известно про акции", day);
     }
 
     private List<Person> GetClients(List<Person> otherCitizens, Company company, ref int comeEarlierCount)
     {
         var wantToBuy = otherCitizens.Where(x => x.IsWantToBuy).ToList();
 
-        Log.Information("[День {@dayn}] Количество желающих приобрести акции выросло: {@wcount}", day, wantToBuy.Count());
+        Logger.logger.LogInformation("[День {@dayn}] Количество желающих приобрести акции выросло: {@wcount}", day, wantToBuy.Count());
 
         var comeEarly = wantToBuy.Where(x => x.HourWhenCome < company.OpeningTime);
         comeEarlierCount = comeEarly.Count();
 
         if (comeEarlierCount > 0)
-            Log.Information("[День {@dayn}] Раньше пришло {@cp} человек", day, comeEarlierCount);
+            Logger.logger.LogInformation("[День {@dayn}] Раньше пришло {@cp} человек", day, comeEarlierCount);
 
         return wantToBuy;
     }
@@ -128,7 +126,7 @@ public class Simulator
         while (true)
         {
             await Task.Run(() => SimulateDay());
-            await Task.Delay(TimeSpan.FromSeconds(1)); // По заданию цикл должен идти бесконечно
+            await Task.Delay(TimeSpan.FromSeconds(5)); // По заданию цикл должен идти бесконечно
         }
     }
 

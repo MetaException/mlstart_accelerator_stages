@@ -1,7 +1,9 @@
-﻿using Serilog;
+﻿using Microsoft.Extensions.Logging;
+using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting.Json;
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 
 namespace cmd
@@ -18,47 +20,51 @@ namespace cmd
             }
         }
 
-        public static readonly ObservableCollection<LogRecord> logEntries = new ObservableCollection<LogRecord>();
+        public static readonly ConcurrentBag<LogRecord> logEntries = new ConcurrentBag<LogRecord>();
+
+        public static ILogger<Simulator> logger;
 
         public static void CreateLogger()
         {
-            Log.Logger = new LoggerConfiguration()
+            var serilogLogger = new LoggerConfiguration()
                 .WriteTo.Console()
                 .WriteTo.Sink(new ListSink(logEntries))
 
-                .WriteTo.File("debug.json",
+                .WriteTo.File("..\\logs\\Simulator\\debug-.txt",
                               restrictedToMinimumLevel: LogEventLevel.Debug,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File("error.json",
+                .WriteTo.File("..\\logs\\Simulator\\error-.txt",
                               restrictedToMinimumLevel: LogEventLevel.Error,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File("fatal.json",
+                .WriteTo.File("..\\logs\\Simulator\\fatal-.txt",
                               restrictedToMinimumLevel: LogEventLevel.Fatal,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File("info.json",
+                .WriteTo.File("..\\logs\\Simulator\\info-.txt",
                               restrictedToMinimumLevel: LogEventLevel.Information,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File("verbose.json",
+                .WriteTo.File("..\\logs\\Simulator\\verbose-.txt",
                               restrictedToMinimumLevel: LogEventLevel.Verbose,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File("warning.json",
+                .WriteTo.File("..\\logs\\Simulator\\warning-.txt",
                               restrictedToMinimumLevel: LogEventLevel.Warning,
                               rollingInterval: RollingInterval.Hour)
 
                 .MinimumLevel.Verbose()
                 .CreateLogger();
+
+            logger = new LoggerFactory().AddSerilog(serilogLogger).CreateLogger<Simulator>();
         }
 
         public class ListSink : ILogEventSink
         {
-            private readonly ObservableCollection<LogRecord> _logList;
+            private readonly ConcurrentBag<LogRecord> _logList;
 
-            public ListSink(ObservableCollection<LogRecord> logList)
+            public ListSink(ConcurrentBag<LogRecord> logList)
             {
                 _logList = logList ?? throw new ArgumentNullException(nameof(logList));
             }
@@ -66,7 +72,7 @@ namespace cmd
             public void Emit(LogEvent logEvent)
             {
                 // Преобразуем логов в строку и добавляем в список
-                _logList.Add(new LogRecord(logEvent.RenderMessage()));
+                _logList.Add(new LogRecord(logEvent.Timestamp + " " + logEvent.RenderMessage()));
             }
         }
 

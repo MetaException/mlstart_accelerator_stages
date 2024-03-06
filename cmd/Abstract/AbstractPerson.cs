@@ -1,4 +1,5 @@
 ﻿using cmd.Interfaces;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using static cmd.Units.Enums;
 
@@ -20,10 +21,10 @@ namespace cmd.Abstract
             inPlace = places;
             if (places == places.OUTSIDE)
             {
-                Log.Information("[День {@dayn}] [Час {@hourn}] {@p_name} удалился", Simulator.day, Simulator.hour, Name);
+                Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@p_name} удалился", Simulator.day, Simulator.hour, Name);
             }
             else
-                Log.Information("[День {@dayn}] [Час {@hourn}] {@p_name} зашёл в {@place}", Simulator.day, Simulator.hour, Name, places.ToString());
+                Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@p_name} зашёл в {@place}", Simulator.day, Simulator.hour, Name, places.ToString());
         }
     }
 }

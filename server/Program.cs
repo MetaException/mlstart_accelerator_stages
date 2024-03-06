@@ -6,7 +6,6 @@ using server.Models;
 using Microsoft.AspNetCore.Identity;
 using static cmd.Logger;
 using cmd;
-using Microsoft.Extensions.Options;
 
 namespace server
 {
@@ -17,42 +16,40 @@ namespace server
             var builder = WebApplication.CreateBuilder(args);
 
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.Sink(new ListSink(logEntries))
-
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug)
                 .WriteTo.File(
-                    "..\\logs\\debug-.json",
+                    "..\\logs\\AspNetCore\\debug-.txt",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Error)
                 .WriteTo.File(
-                    "..\\logs\\error-.json",
+                    "..\\logs\\AspNetCore\\error-.txt",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Fatal)
                 .WriteTo.File(
-                    "..\\logs\\fatal-.json",
+                    "..\\logs\\AspNetCore\\fatal-.txt",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Information)
                 .WriteTo.File(
-                    "..\\logs\\info-.json",
+                    "..\\logs\\AspNetCore\\info-.txt",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Verbose)
                 .WriteTo.File(
-                    "..\\logs\\verbose-.json",
+                    "..\\logs\\AspNetCore\\verbose-.txt",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Warning)
                 .WriteTo.File(
-                    "..\\logs\\warning-.json",
+                    "..\\logs\\AspNetCore\\warning-.txt",
                     rollingInterval: RollingInterval.Hour))
 
                 .MinimumLevel.Verbose()
@@ -77,14 +74,13 @@ namespace server
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSerilogRequestLogging();
             app.UseAuthorization();
-
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            //_ = app.Services.GetRequiredService<Simulator>().SimulateLoop();
+            _ = app.Services.GetRequiredService<Simulator>().SimulateLoop();
 
             app.Run();
         }
@@ -94,11 +90,7 @@ namespace server
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddSingleton<Simulator>(serviceProvider =>
-            {
-                var logger = serviceProvider.GetRequiredService<ILogger<Simulator>>();
-                return new Simulator(logger);
-            });
+            builder.Services.AddSingleton<Simulator>();
 
             builder.Configuration.AddJsonFile("appsettings.json");
 

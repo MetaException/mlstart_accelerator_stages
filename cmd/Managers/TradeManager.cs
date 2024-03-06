@@ -1,4 +1,5 @@
 ﻿using cmd.Interface;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace cmd.Managers;
@@ -28,7 +29,7 @@ static class TradeManager
             sum: priceToPay
         );
 
-        Log.Information("[День {@dayn}] [Час {@hourn}] {@from_name} продал {@shares_count} акций {@to_name} на сумму {@sum}", transaction.day, transaction.hour, transaction.from, transaction.quantity, transaction.quantity, transaction.sum);
+        Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@from_name} продал {@shares_count} акций {@to_name} на сумму {@sum}", transaction.day, transaction.hour, transaction.from, transaction.quantity, transaction.quantity, transaction.sum);
     }
 
     public static void TradeShares(IPaymentSubject from, IPaymentSubject to, int count)
@@ -39,7 +40,7 @@ static class TradeManager
         }
         var shares = from.TakeShares(count);
         to.AddShares(shares);
-        Log.Debug("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} акций {@to_name}", Simulator.day,Simulator.hour, from.Name, count, to.Name);
+        Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} акций {@to_name}", Simulator.day,Simulator.hour, from.Name, count, to.Name);
     }
 
     public static void TradeMoney(IPaymentSubject from, IPaymentSubject to, double priceToPay)
@@ -49,7 +50,7 @@ static class TradeManager
 
         var money = from.TakeMoney(priceToPay); //...
         to.AddMoney(money);
-        Log.Debug("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} денег {@to_name}", Simulator.day, Simulator.hour, from.Name, priceToPay, to.Name);
+        Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} денег {@to_name}", Simulator.day, Simulator.hour, from.Name, priceToPay, to.Name);
     }
 
     public static double CalculatePriceSum(IPaymentSubject company, int countToBuy)

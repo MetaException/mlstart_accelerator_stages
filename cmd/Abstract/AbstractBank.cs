@@ -1,6 +1,7 @@
 ﻿using cmd.Interface;
 using cmd.Interfaces;
 using cmd.Managers;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace cmd.Abstract
@@ -40,7 +41,7 @@ namespace cmd.Abstract
                 balanceMap.Add(name, newVault);
             }
 
-            Log.Information("[День {@dayn}] [Час {@hourn}] {@person_name} сложил {@money_amount} денег в несгораемый шкаф. Всего денег на счёте: {@vault_balance}", Simulator.day, Simulator.hour, name, balance, balanceMap[name].Balance);
+            Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@person_name} сложил {@money_amount} денег в несгораемый шкаф. Всего денег на счёте: {@vault_balance}", Simulator.day, Simulator.hour, name, balance, balanceMap[name].Balance);
         }
     }
 }

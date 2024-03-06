@@ -1,34 +1,30 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using cmd;
+﻿using client.Model;
+using client.Utils;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
-using System.Net.Http.Json;
-using client.Model;
 
 namespace client.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject
 {
-    public MainPageViewModel()
-    {
-        _ = StartLogger();
-        //_ = RunSimulator();
-    }
+    private readonly NetUtils _netUtils;
 
     [ObservableProperty]
-    public ObservableCollection<Logger.LogRecord> _logsList;
+    private ObservableCollection<LogRecord> _logsList;
 
-    private async Task StartLogger()
+    public MainPageViewModel(NetUtils netUtils)
     {
-        Logger.CreateLogger();
-        LogsList = Logger.logEntries;
+        _netUtils = netUtils;
+
+        _ = GetDataAsync();
     }
 
-    private async Task RunSimulator()
+    private async Task GetDataAsync()
     {
         while (true)
         {
-            //wait Task.Run(() => Simulator.SimulateDay());
-            await Task.Delay(TimeSpan.FromSeconds(1)); // По заданию цикл должен идти бесконечно
+            LogsList  = await _netUtils.GetDataAsync();
+            await Task.Delay(TimeSpan.FromSeconds(5));
         }
     }
 }
