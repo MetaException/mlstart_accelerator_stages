@@ -1,6 +1,5 @@
 ## 2й этап
 Проект cmd - 2й этап. Работает в командной строке. Точка входа - метод Main в классе Program.
-Логи хранятся в директории вместе с исполняемым файлом.
 
 # 4й этап
 Проект client - клиент. Интерфейс построен с использованием .NET MAUI. Точка входа - метод CreateMauiApp(), в классе MauiProgram. Паттерн - MVVM. Для этого используется библиотека: CommunityToolkit.Mvvm (https://www.nuget.org/packages/CommunityToolkit.Mvvm).
