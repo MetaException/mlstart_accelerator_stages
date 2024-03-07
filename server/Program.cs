@@ -88,7 +88,9 @@ namespace server
 
             _ = app.Services.GetRequiredService<Simulator>().SimulateLoop();
 
-            app.Run();
+            var configSection = builder.Configuration.GetSection("ConnectionConfiguration");
+
+            app.Run($"http://{configSection["ServerIp"]}:{configSection["ServerPort"]}");
         }
 
         private static void InitilizeApp(WebApplicationBuilder builder)

@@ -27,7 +27,6 @@ namespace cmd
         public static void CreateLogger()
         {
             var serilogLogger = new LoggerConfiguration()
-                .WriteTo.Console()
                 .WriteTo.Sink(new ListSink(logEntries))
 
                 .WriteTo.File("..\\logs\\Simulator\\debug-.txt",
