@@ -6,6 +6,9 @@ using server.Models;
 using Microsoft.AspNetCore.Identity;
 using static cmd.Logger;
 using cmd;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace server
 {
@@ -75,12 +78,15 @@ namespace server
 
             app.UseRouting();
             app.UseSerilogRequestLogging();
+
+            app.UseAuthentication();
             app.UseAuthorization();
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            //_ = app.Services.GetRequiredService<Simulator>().SimulateLoop();
+            _ = app.Services.GetRequiredService<Simulator>().SimulateLoop();
 
             app.Run();
         }
@@ -97,8 +103,6 @@ namespace server
             builder.Services.AddDbContext<MallenomContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionUrl")));
 
-            //builder.Services.AddScoped<DbUtils>();
-
             // https://learn.microsoft.com/ru-ru/aspnet/core/security/authorization/secure-data?view=aspnetcore-8.0
             builder.Services.AddDefaultIdentity<LoginModel>(options =>
             {
@@ -111,22 +115,24 @@ namespace server
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<MallenomContext>();
 
-            /*
-            builder.Services.AddIdentity<LoginModel, IdentityRole>(option =>
-            {
-                option.SignIn.RequireConfirmedAccount = true;
-            })
-                //.AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<MallenomContext>();
-            */
 
-            /*
-            builder.Services.AddAuthorization(options =>
+            builder.Services.AddAuthentication(options =>
             {
-                //options.FallbackPolicy = new AuthorizationPolicyBuilder()
-                    //.RequireAuthenticatedUser()
-                    //.Build();
-            });*/
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("CCEA5D06F64497D9CCB548B70B024ASGESGHES5H50")),
+                    ValidateIssuer = false, 
+                    ValidateAudience = false, 
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
     }
 }

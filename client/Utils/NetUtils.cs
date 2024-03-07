@@ -1,13 +1,20 @@
 ﻿using client.Model;
 using System.Collections.ObjectModel;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Net.NetworkInformation;
+using System.Text.Json;
 
 namespace client.Utils;
 
 public class NetUtils
 {
+    private class TokenModel
+    {
+        public string token { get; set; }
+    }
+
     private readonly HttpClientHandler _handler;
     private readonly HttpClient _client;
 
@@ -27,11 +34,18 @@ public class NetUtils
 
         var response = await _client.PostAsJsonAsync("api/auth/register", newUser);
 
+        //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", yourToken);
+
         if (response.IsSuccessStatusCode)
         {
-            //var result = await response.Content.ReadAsAsync<YourTokenResponseModel>();
-
-            return true;
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var tokenResponse = JsonSerializer.Deserialize<TokenModel>(responseContent);
+            if (tokenResponse != null && !string.IsNullOrEmpty(tokenResponse.token))
+            {
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.token);
+                return true;
+            }
+            return false;
         }
         else
         {
@@ -51,8 +65,14 @@ public class NetUtils
 
         if (response.IsSuccessStatusCode)
         {
-            //var result = await response.Content.ReadAsAsync<YourTokenResponseModel>();
-            return true;
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var tokenResponse = JsonSerializer.Deserialize<TokenModel>(responseContent);
+            if (tokenResponse != null && !string.IsNullOrEmpty(tokenResponse.token))
+            {
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.token);
+                return true;
+            }
+            return false;
         }
         else // Другие ошибки
         {

@@ -9,7 +9,7 @@ namespace server.Controllers
     [ApiController]
     public class DataController : ControllerBase
     {
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet("data")]
         public async Task<IActionResult> SendData()
         {
