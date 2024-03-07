@@ -7,8 +7,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace server.Controllers
 {
     [Route("api/[controller]")]
@@ -28,16 +26,21 @@ namespace server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Login, model.Password, true, false);
+            var user = await _userManager.FindByNameAsync(model.Login);
+
+            if (user is null)
+            {
+                return Unauthorized();
+            }
+            
+            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
-                // Пользователь успешно аутентифицирован
-                return Ok(new { Token = GenerateToken(model.Login) });
+                return Ok(new { Token = GenerateToken(user.UserName) });
             }
             else
             {
-                // Неудачная аутентификация
                 return Unauthorized();
             }
         }
@@ -66,12 +69,7 @@ namespace server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserModel model)
         {
-            var passwordHasher = new PasswordHasher<IdentityUser>();
-
-            var localUser = new LoginModel { UserName = model.Login, PasswordHash = model.Password};
-            //localUser.PasswordHash = passwordHasher.HashPassword(localUser, model.Password);
-
-            //Сделать проверку на то что такого пользователя ещё нет
+            var localUser = new LoginModel { UserName = model.Login };
 
             if (await _userManager.FindByNameAsync(localUser.UserName) is not null)
             {
@@ -82,8 +80,8 @@ namespace server.Controllers
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(localUser, isPersistent: false);
-                return Ok(new { Token = GenerateToken(model.Login) });
+                await _signInManager.SignInAsync(localUser, isPersistent: false);    
+                return Ok(new { Token = GenerateToken(localUser.UserName) });
             }
             else
             {

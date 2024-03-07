@@ -1,7 +1,6 @@
 ﻿using cmd.Managers;
 using cmd.Subjects;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using static cmd.Units.Enums;
 
 namespace cmd;

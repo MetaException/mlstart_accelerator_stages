@@ -80,7 +80,7 @@ namespace server
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            _ = app.Services.GetRequiredService<Simulator>().SimulateLoop();
+            //_ = app.Services.GetRequiredService<Simulator>().SimulateLoop();
 
             app.Run();
         }
