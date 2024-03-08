@@ -20,18 +20,6 @@ namespace client
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-
-            var a = Assembly.GetExecutingAssembly();
-            var appSettings = $"{a.GetName().Name}.Properties.appSettings.json";
-            using var stream = a.GetManifestResourceStream(appSettings);
-
-            var config = new ConfigurationBuilder()
-                .AddJsonStream(stream)
-                .Build();
-
-
-            builder.Configuration.AddConfiguration(config);
-
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
