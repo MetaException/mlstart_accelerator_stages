@@ -38,6 +38,9 @@ namespace client
 
             builder.Services.AddSingleton<NetUtils>();
 
+            builder.Services.AddTransient<ConnectionPage>();
+            builder.Services.AddTransient<ConnectionPageViewModel>();
+
             builder.Services.AddTransient<AuthPage>();
             builder.Services.AddTransient<AuthPageViewModel>();
 

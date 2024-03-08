@@ -1,9 +1,7 @@
 ﻿using client.Model;
 using System.Collections.ObjectModel;
-using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Net.NetworkInformation;
 using System.Text.Json;
 
 namespace client.Utils;
@@ -16,12 +14,11 @@ public class NetUtils
     }
 
     private readonly HttpClientHandler _handler;
-    private readonly HttpClient _client;
+    private HttpClient _client;
 
     public NetUtils()
     {
         _handler = new HttpClientHandler();
-        _client = new HttpClient(_handler) { BaseAddress = new Uri("https://localhost:5000")  };
     }
 
     public async Task<bool> Register(string username, string password)
@@ -119,5 +116,11 @@ public class NetUtils
         {
             return null;
         }
+    }
+
+    public async Task SetIpAndPort(string ip, string port)
+    {
+        // Задавать параметры можно только до отправки первого запроса
+        _client = new HttpClient(_handler) { BaseAddress = new Uri($"https://{ip}:{port}") };
     }
 }
