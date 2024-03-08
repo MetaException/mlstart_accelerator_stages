@@ -74,7 +74,6 @@ namespace server
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
 
             app.UseRouting();
             app.UseSerilogRequestLogging();
@@ -95,8 +94,7 @@ namespace server
 
         private static void InitilizeApp(WebApplicationBuilder builder)
         {
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers();
 
             builder.Services.AddSingleton<Simulator>();
 
@@ -106,7 +104,7 @@ namespace server
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionUrl")));
 
             // https://learn.microsoft.com/ru-ru/aspnet/core/security/authorization/secure-data?view=aspnetcore-8.0
-            builder.Services.AddDefaultIdentity<LoginModel>(options =>
+            builder.Services.AddIdentity<LoginModel, IdentityRole<int>>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
