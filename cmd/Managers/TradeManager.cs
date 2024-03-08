@@ -1,10 +1,9 @@
 ﻿using cmd.Interface;
 using Microsoft.Extensions.Logging;
-using Serilog;
 
 namespace cmd.Managers;
 
-static class TradeManager
+internal static class TradeManager
 {
     public record Transaction(int day, int hour, string from, string to, int quantity, double sum); // ??
 
@@ -40,7 +39,7 @@ static class TradeManager
         }
         var shares = from.TakeShares(count);
         to.AddShares(shares);
-        Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} акций {@to_name}", Simulator.day,Simulator.hour, from.Name, count, to.Name);
+        Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} акций {@to_name}", Simulator.day, Simulator.hour, from.Name, count, to.Name);
     }
 
     public static void TradeMoney(IPaymentSubject from, IPaymentSubject to, double priceToPay)

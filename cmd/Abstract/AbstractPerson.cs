@@ -1,15 +1,17 @@
 ﻿using cmd.Interfaces;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using static cmd.Units.Enums;
 
 namespace cmd.Abstract
 {
-    abstract class AbstractPerson : AbstractPaymentSubject, IPerson
+    internal abstract class AbstractPerson : AbstractPaymentSubject, IPerson
     {
-        public int HourWhenCome { get { return hourWhenCome; } set { hourWhenCome = value; } }
-        public bool IsWantToBuy { get { return isWantToBuy; } set { isWantToBuy = value; } }
-        public bool IsKnowAboutShares { get { return isKnowAboutShares; } set { isKnowAboutShares = value; } }
+        public int HourWhenCome
+        { get { return hourWhenCome; } set { hourWhenCome = value; } }
+        public bool IsWantToBuy
+        { get { return isWantToBuy; } set { isWantToBuy = value; } }
+        public bool IsKnowAboutShares
+        { get { return isKnowAboutShares; } set { isKnowAboutShares = value; } }
 
         protected places inPlace;
         protected int hourWhenCome;

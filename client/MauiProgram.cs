@@ -1,9 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using client.Pages;
-using client.ViewModels;
-using System.Reflection;
+﻿using client.Pages;
 using client.Utils;
+using client.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace client
 {

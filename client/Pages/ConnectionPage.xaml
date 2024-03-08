@@ -4,11 +4,11 @@
              x:Class="client.Pages.ConnectionPage">
 
     <Shell.TitleView>
-        <Label Text="Подключение" FontSize="Title" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+        <Label Text="Подключение" FontSize="Title" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
     </Shell.TitleView>
 
     <ScrollView>
-        
+
         <VerticalStackLayout
             VerticalOptions="CenterAndExpand"
             Padding="30,0"
@@ -20,28 +20,26 @@
             <Entry
                 x:Name="LoginEntry"
                 MaxLength="20"
-                Placeholder="Ip-Адрес" 
-                Text="{Binding Ip}"/>
+                Placeholder="Ip-Адрес"
+                Text="{Binding Ip}" />
 
             <Entry
                 x:Name="PasswordEntry"
                 MaxLength="100"
-                Placeholder="Port" 
-                Text="{Binding Port}"/>
+                Placeholder="Port"
+                Text="{Binding Port}" />
 
-            <HorizontalStackLayout 
+            <HorizontalStackLayout
                 Spacing="15"
                 HorizontalOptions="CenterAndExpand">
 
                 <Button
                     x:Name="ConnectBtn"
-                    Text="Подключиться" 
+                    Text="Подключиться"
                     Command="{Binding ConnectCommand}"
-                    HorizontalOptions="Fill" 
-                    IsEnabled="{Binding IsConnectButtonEnabled}"/>
+                    HorizontalOptions="Fill"
+                    IsEnabled="{Binding IsConnectButtonEnabled}" />
             </HorizontalStackLayout>
-
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>

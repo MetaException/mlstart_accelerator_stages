@@ -10,5 +10,4 @@ namespace client.Pages
             this.BindingContext = viewModel;
         }
     }
-
 }

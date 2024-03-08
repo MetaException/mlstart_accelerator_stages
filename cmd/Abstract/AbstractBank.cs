@@ -2,13 +2,12 @@
 using cmd.Interfaces;
 using cmd.Managers;
 using Microsoft.Extensions.Logging;
-using Serilog;
 
 namespace cmd.Abstract
 {
-    abstract class AbstractBank : AbstractPaymentSubject, IBank
+    internal abstract class AbstractBank : AbstractPaymentSubject, IBank
     {
-        class Vault : AbstractPaymentSubject
+        private class Vault : AbstractPaymentSubject
         {
             public Vault()
             {

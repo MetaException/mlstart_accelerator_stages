@@ -3,12 +3,13 @@ using static cmd.Units.Enums;
 
 namespace cmd.Subjects
 {
-    class Worker : AbstractPerson
+    internal class Worker : AbstractPerson
     {
-        public bool IsBusy { get { return isBusy; } set {  isBusy = value; } } 
+        public bool IsBusy
+        { get { return isBusy; } set { isBusy = value; } }
 
-        bool isBusy;
-        Company company;
+        private bool isBusy;
+        private Company company;
 
         public Worker(string name, Company company, double balance = 0, places inPlace = places.OUTSIDE, bool isBusy = false)
         {

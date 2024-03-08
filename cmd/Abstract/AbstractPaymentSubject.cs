@@ -5,10 +5,14 @@ namespace cmd.Abstract
 {
     public abstract class AbstractPaymentSubject : IPaymentSubject
     {
-        public double Balance { get { return balance; } set { balance = value; } }
-        public string Name { get { return name; } }
-        public List<Share> Shares { get { return shares; }}
-        public double SharesPrice { get { return sharesPrice; } set { sharesPrice = value; } }
+        public double Balance
+        { get { return balance; } set { balance = value; } }
+        public string Name
+        { get { return name; } }
+        public List<Share> Shares
+        { get { return shares; } }
+        public double SharesPrice
+        { get { return sharesPrice; } set { sharesPrice = value; } }
 
         protected double balance;
         protected List<Share> shares;

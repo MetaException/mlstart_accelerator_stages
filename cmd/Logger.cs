@@ -2,9 +2,7 @@
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
-using Serilog.Formatting.Json;
 using System.Collections.Concurrent;
-using System.Collections.ObjectModel;
 
 namespace cmd
 {
@@ -74,6 +72,5 @@ namespace cmd
                 _logList.Add(new LogRecord(logEvent.Timestamp + " " + logEvent.RenderMessage()));
             }
         }
-
     }
 }

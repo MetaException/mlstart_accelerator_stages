@@ -1,13 +1,11 @@
-using Serilog;
-using Serilog.Events;
-using Serilog.Formatting.Json;
-using Microsoft.EntityFrameworkCore;
-using server.Models;
-using Microsoft.AspNetCore.Identity;
-using static cmd.Logger;
 using cmd;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Serilog.Events;
+using server.Models;
 using System.Text;
 
 namespace server
@@ -115,7 +113,6 @@ namespace server
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<MallenomContext>();
 
-
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -127,8 +124,8 @@ namespace server
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("CCEA5D06F64497D9CCB548B70B024ASGESGHES5H50")),
-                    ValidateIssuer = false, 
-                    ValidateAudience = false, 
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };

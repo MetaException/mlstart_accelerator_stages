@@ -6,7 +6,6 @@ using server.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
 
 namespace server.Controllers
 {
@@ -33,7 +32,7 @@ namespace server.Controllers
             {
                 return Unauthorized();
             }
-            
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
 
             if (result.Succeeded)
@@ -49,7 +48,7 @@ namespace server.Controllers
         private string GenerateToken(string username)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("CCEA5D06F64497D9CCB548B70B024ASGESGHES5H50"); 
+            var key = Encoding.ASCII.GetBytes("CCEA5D06F64497D9CCB548B70B024ASGESGHES5H50");
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -64,7 +63,6 @@ namespace server.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-
 
         [AllowAnonymous]
         [HttpPost("register")]
@@ -81,7 +79,7 @@ namespace server.Controllers
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(localUser, isPersistent: false);    
+                await _signInManager.SignInAsync(localUser, isPersistent: false);
                 return Ok(new { Token = GenerateToken(localUser.UserName) });
             }
             else
@@ -89,6 +87,5 @@ namespace server.Controllers
                 return BadRequest(result.Errors);
             }
         }
-
     }
 }

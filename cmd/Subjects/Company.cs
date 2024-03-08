@@ -3,10 +3,12 @@ using cmd.Units;
 
 namespace cmd.Subjects
 {
-    class Company : AbstractPaymentSubject
+    internal class Company : AbstractPaymentSubject
     {
-        public int OpeningTime { get { return openingTime; } }
-        public int ClosingTime { get { return closingTime; } }
+        public int OpeningTime
+        { get { return openingTime; } }
+        public int ClosingTime
+        { get { return closingTime; } }
 
         private readonly int openingTime;
         private readonly int closingTime;

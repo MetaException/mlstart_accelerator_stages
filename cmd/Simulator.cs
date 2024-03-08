@@ -128,5 +128,4 @@ public class Simulator
             await Task.Delay(TimeSpan.FromSeconds(5)); // По заданию цикл должен идти бесконечно
         }
     }
-
 }

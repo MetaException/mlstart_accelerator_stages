@@ -1,11 +1,10 @@
 ﻿using cmd.Abstract;
 using cmd.Units;
-using Serilog;
 using static cmd.Units.Enums;
 
 namespace cmd.Subjects
 {
-    class Person : AbstractPerson
+    internal class Person : AbstractPerson
     {
         public Person(string name, double balance = 0, bool isWantToBuy = false, places inPlace = places.OUTSIDE)
         {

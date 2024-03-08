@@ -8,7 +8,6 @@ namespace client
         {
             InitializeComponent();
 
-
             Routing.RegisterRoute("AuthPage", typeof(AuthPage));
             Routing.RegisterRoute("MainPage", typeof(MainPage));
         }

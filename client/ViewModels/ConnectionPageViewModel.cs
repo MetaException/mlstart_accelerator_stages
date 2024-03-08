@@ -7,6 +7,7 @@ namespace client.ViewModels;
 public partial class ConnectionPageViewModel : ObservableObject
 {
     private readonly NetUtils _netUtils;
+
     public ConnectionPageViewModel()
     {
         _netUtils = Application.Current.Handler.MauiContext.Services.GetService<NetUtils>();
@@ -48,7 +49,7 @@ public partial class ConnectionPageViewModel : ObservableObject
             return;
         }
 
-        bool result = await _netUtils.CheckServerConnection();;
+        bool result = await _netUtils.CheckServerConnection(); ;
         if (result) // Подключено успешно
         {
             await Shell.Current.GoToAsync("AuthPage");

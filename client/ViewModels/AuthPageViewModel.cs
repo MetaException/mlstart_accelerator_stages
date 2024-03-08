@@ -7,6 +7,7 @@ namespace client.ViewModels;
 public partial class AuthPageViewModel : ObservableObject
 {
     private readonly NetUtils _netUtils;
+
     public AuthPageViewModel()
     {
         _netUtils = Application.Current.Handler.MauiContext.Services.GetService<NetUtils>();
@@ -88,7 +89,7 @@ public partial class AuthPageViewModel : ObservableObject
     }
 
     // TODO: Отедльная страница регистрации
-    private async Task RegisterAsync() 
+    private async Task RegisterAsync()
     {
         if (!await CheckServerConnection())
         {

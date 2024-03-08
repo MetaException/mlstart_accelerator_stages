@@ -4,11 +4,11 @@
              x:Class="client.Pages.AuthPage">
 
     <Shell.TitleView>
-        <Label Text="Авторизация" FontSize="Title" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+        <Label Text="Авторизация" FontSize="Title" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
     </Shell.TitleView>
 
     <ScrollView>
-        
+
         <VerticalStackLayout
             VerticalOptions="CenterAndExpand"
             Padding="30,0"
@@ -20,36 +20,34 @@
             <Entry
                 x:Name="LoginEntry"
                 MaxLength="20"
-                Placeholder="Логин" 
-                Text="{Binding Login}"/>
+                Placeholder="Логин"
+                Text="{Binding Login}" />
 
             <Entry
                 x:Name="PasswordEntry"
                 MaxLength="100"
-                Placeholder="Пароль" 
-                IsPassword="True" 
-                Text="{Binding Password}"/>
+                Placeholder="Пароль"
+                IsPassword="True"
+                Text="{Binding Password}" />
 
-            <HorizontalStackLayout 
+            <HorizontalStackLayout
                 Spacing="15"
                 HorizontalOptions="EndAndExpand">
-                
+
                 <Button
                     x:Name="LoginBtn"
-                    Text="Авторизация" 
+                    Text="Авторизация"
                     Command="{Binding LoginCommand}"
-                    HorizontalOptions="Fill" 
-                    IsEnabled="{Binding IsLoginButtonEnabled}"/>
+                    HorizontalOptions="Fill"
+                    IsEnabled="{Binding IsLoginButtonEnabled}" />
 
                 <Button
                     x:Name="RegBtn"
-                    Text="Регистрация" 
+                    Text="Регистрация"
                     Command="{Binding RegisterCommand}"
-                    HorizontalOptions="Fill" 
-                    IsEnabled="{Binding IsRegisterButtonEnabled}"/>
+                    HorizontalOptions="Fill"
+                    IsEnabled="{Binding IsRegisterButtonEnabled}" />
             </HorizontalStackLayout>
-
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>
