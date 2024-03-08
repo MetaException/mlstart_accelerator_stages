@@ -89,7 +89,7 @@ namespace server
 
             var configSection = builder.Configuration.GetSection("ConnectionConfiguration");
 
-            app.Run($"http://{configSection["ServerIp"]}:{configSection["ServerPort"]}");
+            app.Run($"https://{configSection["ServerIp"]}:{configSection["ServerPort"]}");
         }
 
         private static void InitilizeApp(WebApplicationBuilder builder)

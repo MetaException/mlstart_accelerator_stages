@@ -21,7 +21,7 @@ public class NetUtils
     public NetUtils()
     {
         _handler = new HttpClientHandler();
-        _client = new HttpClient(_handler) { BaseAddress = new Uri("http://localhost:5000")  };
+        _client = new HttpClient(_handler) { BaseAddress = new Uri("https://localhost:5000")  };
     }
 
     public async Task<bool> Register(string username, string password)
