@@ -27,27 +27,27 @@ namespace cmd
             var serilogLogger = new LoggerConfiguration()
                 .WriteTo.Sink(new ListSink(logEntries))
 
-                .WriteTo.File("..\\logs\\Simulator\\debug-.txt",
+                .WriteTo.File("logs\\Simulator\\debug-.txt",
                               restrictedToMinimumLevel: LogEventLevel.Debug,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File("..\\logs\\Simulator\\error-.txt",
+                .WriteTo.File("logs\\Simulator\\error-.txt",
                               restrictedToMinimumLevel: LogEventLevel.Error,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File("..\\logs\\Simulator\\fatal-.txt",
+                .WriteTo.File("logs\\Simulator\\fatal-.txt",
                               restrictedToMinimumLevel: LogEventLevel.Fatal,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File("..\\logs\\Simulator\\info-.txt",
+                .WriteTo.File("logs\\Simulator\\info-.txt",
                               restrictedToMinimumLevel: LogEventLevel.Information,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File("..\\logs\\Simulator\\verbose-.txt",
+                .WriteTo.File("logs\\Simulator\\verbose-.txt",
                               restrictedToMinimumLevel: LogEventLevel.Verbose,
                               rollingInterval: RollingInterval.Hour)
 
-                .WriteTo.File("..\\logs\\Simulator\\warning-.txt",
+                .WriteTo.File("logs\\Simulator\\warning-.txt",
                               restrictedToMinimumLevel: LogEventLevel.Warning,
                               rollingInterval: RollingInterval.Hour)
 

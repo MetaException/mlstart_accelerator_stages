@@ -19,37 +19,37 @@ namespace server
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug)
                 .WriteTo.File(
-                    "..\\logs\\AspNetCore\\debug-.txt",
+                    "logs\\AspNetCore\\debug-.txt",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Error)
                 .WriteTo.File(
-                    "..\\logs\\AspNetCore\\error-.txt",
+                    "logs\\AspNetCore\\error-.txt",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Fatal)
                 .WriteTo.File(
-                    "..\\logs\\AspNetCore\\fatal-.txt",
+                    "logs\\AspNetCore\\fatal-.txt",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Information)
                 .WriteTo.File(
-                    "..\\logs\\AspNetCore\\info-.txt",
+                    "logs\\AspNetCore\\info-.txt",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Verbose)
                 .WriteTo.File(
-                    "..\\logs\\AspNetCore\\verbose-.txt",
+                    "logs\\AspNetCore\\verbose-.txt",
                     rollingInterval: RollingInterval.Hour))
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Warning)
                 .WriteTo.File(
-                    "..\\logs\\AspNetCore\\warning-.txt",
+                    "logs\\AspNetCore\\warning-.txt",
                     rollingInterval: RollingInterval.Hour))
 
                 .MinimumLevel.Verbose()
