@@ -13,10 +13,10 @@ namespace server.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly SignInManager<LoginModel> _signInManager;
-        private readonly UserManager<LoginModel> _userManager;
+        private readonly SignInManager<IdentityUser<int>> _signInManager;
+        private readonly UserManager<IdentityUser<int>> _userManager;
 
-        public AuthController(SignInManager<LoginModel> signInManager, UserManager<LoginModel> userManager)
+        public AuthController(SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -68,7 +68,7 @@ namespace server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserModel model)
         {
-            var localUser = new LoginModel { UserName = model.Login };
+            var localUser = new IdentityUser<int> { UserName = model.Login };
 
             if (await _userManager.FindByNameAsync(localUser.UserName) is not null)
             {

@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Events;
-using server.Models;
 using System.Text;
 
 namespace server
@@ -102,7 +101,7 @@ namespace server
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionUrl")));
 
             // https://learn.microsoft.com/ru-ru/aspnet/core/security/authorization/secure-data?view=aspnetcore-8.0
-            builder.Services.AddIdentity<LoginModel, IdentityRole<int>>(options =>
+            builder.Services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
