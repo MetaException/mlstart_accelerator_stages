@@ -7,17 +7,13 @@
         <Label Text="Логи" FontSize="Title" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
     </Shell.TitleView>
 
-    <Shell.BackButtonBehavior>
-        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
-    </Shell.BackButtonBehavior>
-
     <Grid VerticalOptions="FillAndExpand">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" x:Name="internetError" IsVisible="False" StrokeThickness="1" BackgroundColor="OrangeRed">
+        <Border Grid.Row="0" x:Name="internetError" IsVisible="{Binding IsInternetErrorVisible}" StrokeThickness="1" BackgroundColor="OrangeRed">
             <Label Text="Потеряно соединение сервером" VerticalOptions="Start" HorizontalTextAlignment="Center" VerticalTextAlignment="Start" />
         </Border>
 

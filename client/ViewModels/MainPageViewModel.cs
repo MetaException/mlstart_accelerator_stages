@@ -12,6 +12,9 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<LogRecord> _logsList;
 
+    [ObservableProperty]
+    private bool _isInternetErrorVisible;
+
     public MainPageViewModel(NetUtils netUtils)
     {
         _netUtils = netUtils;
@@ -23,7 +26,17 @@ public partial class MainPageViewModel : ObservableObject
     {
         while (true)
         {
-            LogsList = await _netUtils.GetDataAsync();
+            var recievedData = await _netUtils.GetDataAsync();
+
+            if (recievedData is not null)
+            {
+                IsInternetErrorVisible = false;
+                LogsList = recievedData;
+            }
+            else
+            {
+                IsInternetErrorVisible = true;
+            }
             await Task.Delay(TimeSpan.FromSeconds(1));
         }
     }
