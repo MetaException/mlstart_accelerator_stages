@@ -12,7 +12,7 @@ namespace server.Controllers
         [HttpGet("data")]
         public async Task<IActionResult> SendData()
         {
-            return Ok(Logger.logEntries);
+            return Ok(SimulatorLogger.logEntries);
         }
     }
 }

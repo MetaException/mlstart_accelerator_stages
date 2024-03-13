@@ -40,7 +40,8 @@ namespace cmd.Abstract
                 balanceMap.Add(name, newVault);
             }
 
-            Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@person_name} сложил {@money_amount} денег в несгораемый шкаф. Всего денег на счёте: {@vault_balance}", Simulator.day, Simulator.hour, name, balance, balanceMap[name].Balance);
+            Simulator.WaitDelay().Wait();
+            SimulatorLogger.Logger.Information("[День {@dayn}] [Час {@hourn}] {@person_name} сложил {@money_amount} денег в несгораемый шкаф. Всего денег на счёте: {@vault_balance}", Simulator.day, Simulator.hour, name, balance, balanceMap[name].Balance);
         }
     }
 }

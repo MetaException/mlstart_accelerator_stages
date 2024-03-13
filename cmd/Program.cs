@@ -6,13 +6,9 @@ namespace cmd
     {
         private static void Main(string[] args)
         {
-            Logger.CreateLogger();
-
-            var simulator = new Simulator();
-
             while (true) // По заданию должен быть день сурка
             {
-                simulator.SimulateDay();
+                Simulator.SimulateDay();
             }
         }
     }

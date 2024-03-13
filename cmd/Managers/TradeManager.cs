@@ -7,7 +7,7 @@ internal static class TradeManager
 {
     public record Transaction(int day, int hour, string from, string to, int quantity, double sum); // ??
 
-    public static void PerformDeal(IPaymentSubject from, IPaymentSubject to, int countToTrade)
+    public static async void PerformDeal(IPaymentSubject from, IPaymentSubject to, int countToTrade)
     {
         double priceToPay = CalculatePriceSum(from, countToTrade);
 
@@ -27,11 +27,11 @@ internal static class TradeManager
             quantity: countToTrade,
             sum: priceToPay
         );
-
-        Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@from_name} продал {@shares_count} акций {@to_name} на сумму {@sum}", transaction.day, transaction.hour, transaction.from, transaction.quantity, transaction.quantity, transaction.sum);
+        Simulator.WaitDelay().Wait();
+        SimulatorLogger.Logger.Information("[День {@dayn}] [Час {@hourn}] {@from_name} продал {@shares_count} акций {@to_name} на сумму {@sum}", transaction.day, transaction.hour, transaction.from, transaction.quantity, transaction.quantity, transaction.sum);
     }
 
-    public static void TradeShares(IPaymentSubject from, IPaymentSubject to, int count)
+    public static async void TradeShares(IPaymentSubject from, IPaymentSubject to, int count)
     {
         if (from.GetSharesCount() < count)
         {
@@ -39,7 +39,9 @@ internal static class TradeManager
         }
         var shares = from.TakeShares(count);
         to.AddShares(shares);
-        Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} акций {@to_name}", Simulator.day, Simulator.hour, from.Name, count, to.Name);
+
+        Simulator.WaitDelay().Wait();
+        SimulatorLogger.Logger.Debug("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} акций {@to_name}", Simulator.day, Simulator.hour, from.Name, count, to.Name);
     }
 
     public static void TradeMoney(IPaymentSubject from, IPaymentSubject to, double priceToPay)
@@ -49,7 +51,9 @@ internal static class TradeManager
 
         var money = from.TakeMoney(priceToPay); //...
         to.AddMoney(money);
-        Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} денег {@to_name}", Simulator.day, Simulator.hour, from.Name, priceToPay, to.Name);
+
+        Simulator.WaitDelay().Wait();
+        SimulatorLogger.Logger.Debug("[День {@dayn}] [Час {@hourn}] {@from_name} передал {@shares_count} денег {@to_name}", Simulator.day, Simulator.hour, from.Name, priceToPay, to.Name);
     }
 
     public static double CalculatePriceSum(IPaymentSubject company, int countToBuy)

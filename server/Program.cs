@@ -82,10 +82,11 @@ namespace server
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            _ = app.Services.GetRequiredService<Simulator>().SimulateLoop();
+            Simulator.tasksDelay = Convert.ToDouble(builder.Configuration.GetRequiredSection("SimulatorConfiguration")["TasksDelayInSeconds"]); 
+
+            _ = Simulator.SimulateLoop();
 
             var configSection = builder.Configuration.GetSection("ConnectionConfiguration");
-
             app.Run($"https://{configSection["ServerIp"]}:{configSection["ServerPort"]}");
         }
 
@@ -93,9 +94,9 @@ namespace server
         {
             builder.Services.AddControllers();
 
-            builder.Services.AddSingleton<Simulator>();
-
             builder.Configuration.AddJsonFile("appsettings.json");
+
+            builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
             builder.Services.AddDbContext<MallenomContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionUrl")));

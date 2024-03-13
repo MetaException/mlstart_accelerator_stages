@@ -21,12 +21,13 @@ namespace cmd.Abstract
         public void EnterTo(places places)
         {
             inPlace = places;
+            Simulator.WaitDelay().Wait();
             if (places == places.OUTSIDE)
             {
-                Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@p_name} удалился", Simulator.day, Simulator.hour, Name);
+                SimulatorLogger.Logger.Information("[День {@dayn}] [Час {@hourn}] {@p_name} удалился", Simulator.day, Simulator.hour, Name);
             }
             else
-                Logger.logger.LogInformation("[День {@dayn}] [Час {@hourn}] {@p_name} зашёл в {@place}", Simulator.day, Simulator.hour, Name, places.ToString());
+                SimulatorLogger.Logger.Information("[День {@dayn}] [Час {@hourn}] {@p_name} зашёл в {@place}", Simulator.day, Simulator.hour, Name, places.ToString());
         }
     }
 }

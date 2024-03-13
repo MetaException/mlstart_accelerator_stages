@@ -1,23 +1,26 @@
 ﻿using cmd.Managers;
 using cmd.Subjects;
-using Microsoft.Extensions.Logging;
+using Serilog;
+using System.Data;
 using static cmd.Units.Enums;
 
 namespace cmd;
 
-public class Simulator
+public static class Simulator
 {
-    private readonly Random rnd = new Random();
+    private static readonly Random rnd = new Random();
 
     public static int day;
     public static int hour;
 
-    public Simulator()
+    public static double tasksDelay;
+
+    static Simulator()
     {
-        Logger.CreateLogger();
+        SimulatorLogger.CreateLogger();
     }
 
-    public void SimulateDay()
+    public static void SimulateDay()
     {
         var bank = new Bank("Банк", 0, 100);
         var company = new Company(name: "Общество гигантских растений", sharesCount: 1500);
@@ -35,9 +38,9 @@ public class Simulator
             if (dayi == 1)
                 shorty.IsWantToBuy = true;
 
-            GenerateDemand(otherCitizens, comeEarlierCount);
+            GenerateDemandAsync(otherCitizens, comeEarlierCount);
 
-            var wantToBuy = GetClients(otherCitizens, company, ref comeEarlierCount);
+            var wantToBuy = GetClientsAsync(otherCitizens, company, ref comeEarlierCount);
 
             for (int houri = 7; houri <= 19; houri++)
             {
@@ -61,7 +64,10 @@ public class Simulator
                             dunnoAndGoaty.IsBusy = false;
                         }
                         else
-                            Logger.logger.LogInformation("[День {@dayn}] Акции распроданы", dayi);
+                        {
+                            WaitDelay().Wait();
+                            SimulatorLogger.Logger.Information("[День {@dayn}] Акции распроданы", dayi);
+                        }
 
                         client.EnterTo(places.OUTSIDE);
                     }
@@ -81,7 +87,7 @@ public class Simulator
         }
     }
 
-    private List<Person> GenerateRandomCitizens(int count)
+    private static List<Person> GenerateRandomCitizens(int count)
     {
         var citizens = Enumerable.Range(0, count)
             .Select(i => new Person($"person-{i}", 300 + new Random().NextDouble() * 1000))
@@ -90,7 +96,7 @@ public class Simulator
         return citizens;
     }
 
-    private void GenerateDemand(List<Person> otherCitizens, int comeEarlierCount)
+    private static void GenerateDemandAsync(List<Person> otherCitizens, int comeEarlierCount)
     {
         var dontWantToBuy = otherCitizens.Where(x => !x.IsWantToBuy).ToArray();
 
@@ -102,30 +108,42 @@ public class Simulator
         }
 
         if (dontWantToBuy.Length == 0)
-            Logger.logger.LogInformation("[День {@dayn}] Всем в городе стало известно про акции", day);
+        {
+            WaitDelay().Wait();
+            SimulatorLogger.Logger.Information("[День {@dayn}] Всем в городе стало известно про акции", day);
+        }
     }
 
-    private List<Person> GetClients(List<Person> otherCitizens, Company company, ref int comeEarlierCount)
+    private static List<Person> GetClientsAsync(List<Person> otherCitizens, Company company, ref int comeEarlierCount)
     {
         var wantToBuy = otherCitizens.Where(x => x.IsWantToBuy).ToList();
 
-        Logger.logger.LogInformation("[День {@dayn}] Количество желающих приобрести акции выросло: {@wcount}", day, wantToBuy.Count());
+        WaitDelay().Wait();
+        SimulatorLogger.Logger.Information("[День {@dayn}] Количество желающих приобрести акции выросло: {@wcount}", day, wantToBuy.Count());
 
         var comeEarly = wantToBuy.Where(x => x.HourWhenCome < company.OpeningTime);
         comeEarlierCount = comeEarly.Count();
 
         if (comeEarlierCount > 0)
-            Logger.logger.LogInformation("[День {@dayn}] Раньше пришло {@cp} человек", day, comeEarlierCount);
+        {
+            WaitDelay().Wait();
+            SimulatorLogger.Logger.Information("[День {@dayn}] Раньше пришло {@cp} человек", day, comeEarlierCount);
+        }
 
         return wantToBuy;
     }
 
-    public async Task SimulateLoop()
+    public static async Task SimulateLoop()
     {
         while (true)
         {
             await Task.Run(() => SimulateDay());
-            await Task.Delay(TimeSpan.FromSeconds(5)); // По заданию цикл должен идти бесконечно
+            await Task.Delay(TimeSpan.FromSeconds(tasksDelay)); // По заданию цикл должен идти бесконечно
         }
+    }
+
+    public static async Task WaitDelay()
+    {
+        await Task.Delay(TimeSpan.FromSeconds(tasksDelay));
     }
 }

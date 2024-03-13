@@ -24,7 +24,7 @@ public partial class MainPageViewModel : ObservableObject
         while (true)
         {
             LogsList = await _netUtils.GetDataAsync();
-            await Task.Delay(TimeSpan.FromSeconds(5));
+            await Task.Delay(TimeSpan.FromSeconds(1));
         }
     }
 }
