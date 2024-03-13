@@ -1,8 +1,10 @@
 ﻿using client.Model;
 using System.Collections.ObjectModel;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using static client.Model.ResponseEnum;
 
 namespace client.Utils;
 
@@ -21,7 +23,7 @@ public class NetUtils
         _handler = new HttpClientHandler();
     }
 
-    public async Task<bool> Register(string username, string password)
+    public async Task<NetUtilsResponseCodes> Register(string username, string password)
     {
         var newUser = new User
         {
@@ -31,8 +33,6 @@ public class NetUtils
 
         var response = await _client.PostAsJsonAsync("api/auth/register", newUser);
 
-        //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", yourToken);
-
         if (response.IsSuccessStatusCode)
         {
             var responseContent = await response.Content.ReadAsStringAsync();
@@ -40,17 +40,21 @@ public class NetUtils
             if (tokenResponse != null && !string.IsNullOrEmpty(tokenResponse.token))
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.token);
-                return true;
+                return NetUtilsResponseCodes.OK;
             }
-            return false;
         }
-        else
+        else if (response.StatusCode == HttpStatusCode.Conflict)
         {
-            return false;
+            return NetUtilsResponseCodes.USERISALREDYEXISTS;
         }
+        else if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            return NetUtilsResponseCodes.BADREQUEST;
+        }
+        return NetUtilsResponseCodes.ERROR;
     }
 
-    public async Task<bool> Login(string username, string password)
+    public async Task<NetUtilsResponseCodes> Login(string username, string password)
     {
         var user = new User
         {
@@ -67,14 +71,14 @@ public class NetUtils
             if (tokenResponse != null && !string.IsNullOrEmpty(tokenResponse.token))
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.token);
-                return true;
+                return NetUtilsResponseCodes.OK;
             }
-            return false;
         }
-        else // Другие ошибки
+        else if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
-            return false;
+            return NetUtilsResponseCodes.UNATHROIZED;
         }
+        return NetUtilsResponseCodes.ERROR;
     }
 
     public async Task<bool> CheckServerConnection()
@@ -87,8 +91,7 @@ public class NetUtils
             {
                 return true;
             }
-            else
-                return false;
+            return false;
         }
         catch
         {

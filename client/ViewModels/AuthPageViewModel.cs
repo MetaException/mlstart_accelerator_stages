@@ -1,6 +1,7 @@
 ﻿using client.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using static client.Model.ResponseEnum;
 
 namespace client.ViewModels;
 
@@ -64,18 +65,23 @@ public partial class AuthPageViewModel : ObservableObject
         try
         {
             IsLoginButtonEnabled = false;
-            bool isAuthorized = await _netUtils.Login(Login, Password);
-            if (isAuthorized)
+            var result = await _netUtils.Login(Login, Password);
+
+            if (result == NetUtilsResponseCodes.OK)
             {
                 await Shell.Current.GoToAsync("MainPage");
                 return;
             }
-            else
+            else if (result == NetUtilsResponseCodes.UNATHROIZED)
             {
                 IsErrorLabelEnabled = true;
                 ErrorLabel = "Неверный логин или пароль";
             }
-            // Выводить также и другие ошибки
+            else
+            {
+                IsErrorLabelEnabled = true;
+                ErrorLabel = "Произошла ошибка при выполнении входа";
+            }
         }
         catch (Exception ex)
         {
@@ -99,11 +105,27 @@ public partial class AuthPageViewModel : ObservableObject
         try
         {
             IsRegisterButtonEnabled = false;
-            bool isRegistered = await _netUtils.Register(Login, Password);
-            if (isRegistered)
+            var result = await _netUtils.Register(Login, Password);
+
+            if (result == NetUtilsResponseCodes.OK)
             {
                 await Shell.Current.GoToAsync("MainPage");
                 return;
+            }
+            else if (result == NetUtilsResponseCodes.USERISALREDYEXISTS)
+            {
+                IsErrorLabelEnabled = true;
+                ErrorLabel = "Пользователь уже зарегистрирован";
+            }
+            else if (result == NetUtilsResponseCodes.BADREQUEST)
+            {
+                IsErrorLabelEnabled = true;
+                ErrorLabel = "Некорректно введён логин или пароль";
+            }
+            else
+            {
+                IsErrorLabelEnabled = true;
+                ErrorLabel = "Произошла ошибка при регистрации пользователя";
             }
         }
         catch (Exception ex)

@@ -26,7 +26,15 @@ namespace server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.Login);
+            IdentityUser<int> user;
+            try
+            {
+                user = await _userManager.FindByNameAsync(model.Login);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
 
             if (user is null)
             {
@@ -70,9 +78,16 @@ namespace server.Controllers
         {
             var localUser = new IdentityUser<int> { UserName = model.Login };
 
-            if (await _userManager.FindByNameAsync(localUser.UserName) is not null)
+            try
             {
-                return Conflict("Account is already exists");
+                if (await _userManager.FindByNameAsync(localUser.UserName) is not null)
+                {
+                    return Conflict("Account is already exists");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal Server Error");
             }
 
             var result = await _userManager.CreateAsync(localUser, model.Password);
