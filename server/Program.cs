@@ -26,6 +26,8 @@ namespace server
 
             _ = Simulator.SimulateLoop();
 
+            _ = CheckDatabaseConnection(app);
+
             app.Run();
         }
 
@@ -153,6 +155,29 @@ namespace server
             var configSection = builder.Configuration.GetSection("ConnectionConfiguration");
 
             builder.WebHost.UseUrls($"https://{configSection["ServerIp"]}:{configSection["ServerPort"]}");
+        }
+
+        private static async Task CheckDatabaseConnection(WebApplication app)
+        {
+            // Получаем доступ к контейнеру DI через IServiceProvider
+            var serviceProvider = app.Services.GetRequiredService<IServiceProvider>();
+
+            // Извлекаем MallenomContext из контейнера DI
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<MallenomContext>();
+
+                bool isConnected = await context.Database.CanConnectAsync();
+
+                if (isConnected)
+                {
+                    Log.Information("Successfully connect to database server");
+                }
+                else
+                {
+                    Log.Error("Can't connect to the database server");
+                }
+            }
         }
     }
 }
