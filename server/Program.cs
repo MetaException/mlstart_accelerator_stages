@@ -82,7 +82,8 @@ namespace server
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            Simulator.tasksDelay = Convert.ToDouble(builder.Configuration.GetRequiredSection("SimulatorConfiguration")["TasksDelayInSeconds"]); 
+            Simulator.tasksDelay = Convert.ToDouble(builder.Configuration.GetRequiredSection("SimulatorConfiguration")["TasksDelayInSeconds"]);
+            SimulatorLogger.MaxLogsCount = Convert.ToInt32(builder.Configuration.GetRequiredSection("SimulatorConfiguration")["MaxLogsCount"]);
 
             _ = Simulator.SimulateLoop();
 

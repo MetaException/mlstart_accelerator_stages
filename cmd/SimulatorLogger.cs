@@ -17,9 +17,10 @@ namespace cmd
             }
         }
 
+        public static ILogger Logger;
         public static readonly ConcurrentQueue<LogRecord> logEntries = new ConcurrentQueue<LogRecord>();
 
-        public static ILogger Logger;
+        public static int MaxLogsCount = 100;
 
         public static void CreateLogger()
         {
@@ -63,7 +64,9 @@ namespace cmd
 
             public async void Emit(LogEvent logEvent)
             {
-                // Преобразуем логов в строку и добавляем в список
+                if (logEntries.Count > MaxLogsCount)
+                    logEntries.TryDequeue(out _);
+
                 logEntries.Enqueue(new LogRecord(logEvent.Timestamp + " " + logEvent.RenderMessage()));
             }
         }

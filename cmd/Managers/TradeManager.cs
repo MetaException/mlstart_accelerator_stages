@@ -28,7 +28,7 @@ internal static class TradeManager
             sum: priceToPay
         );
         Simulator.WaitDelay().Wait();
-        SimulatorLogger.Logger.Information("[День {@dayn}] [Час {@hourn}] {@from_name} продал {@shares_count} акций {@to_name} на сумму {@sum}", transaction.day, transaction.hour, transaction.from, transaction.quantity, transaction.quantity, transaction.sum);
+        SimulatorLogger.Logger.Information("[День {@dayn}] [Час {@hourn}] {@from_name} продал {@shares_count} акций {@to_name} на сумму {@sum}", transaction.day, transaction.hour, transaction.from, transaction.quantity, transaction.to, transaction.sum);
     }
 
     public static async void TradeShares(IPaymentSubject from, IPaymentSubject to, int count)
