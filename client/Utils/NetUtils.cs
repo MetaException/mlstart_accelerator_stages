@@ -11,6 +11,11 @@ namespace client.Utils;
 
 public class NetUtils
 {
+    private class TokenModel
+    {
+        public string token { get; set; }
+    }
+
     private readonly HttpClientHandler _handler;
     private HttpClient _client;
 
@@ -44,9 +49,9 @@ public class NetUtils
                 {
                     var tokenResponse = JsonSerializer.Deserialize<TokenModel>(responseContent);
 
-                    if (tokenResponse != null && !string.IsNullOrEmpty(tokenResponse.Token))
+                    if (tokenResponse != null && !string.IsNullOrEmpty(tokenResponse.token))
                     {
-                        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.Token);
+                        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.token);
 
                         Log.Information($"Successful authorization on {_client.BaseAddress}");
                         return NetUtilsResponseCodes.OK;
