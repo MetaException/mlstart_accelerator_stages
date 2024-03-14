@@ -1,6 +1,7 @@
 ﻿using client.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Serilog;
 
 namespace client.ViewModels;
 
@@ -15,22 +16,22 @@ public partial class ConnectionPageViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    public string _ip;
+    private string _ip;
 
     [ObservableProperty]
-    public string _port;
+    private string _port;
 
     [ObservableProperty]
-    public string _errorLabel;
+    private string _errorLabel;
 
     [ObservableProperty]
-    public string _welcomeLabelText = "Введите Ip-адрес и порт";
+    private string _welcomeLabelText = "Введите Ip-адрес и порт";
 
     [ObservableProperty]
-    public bool _isConnectButtonEnabled = true;
+    private bool _isConnectButtonEnabled = true;
 
     [ObservableProperty]
-    public bool _isErrorLabelEnabled = false;
+    private bool _isErrorLabelEnabled = false;
 
     public RelayCommand ConnectCommand { get; }
 
@@ -40,11 +41,12 @@ public partial class ConnectionPageViewModel : ObservableObject
 
         try
         {
-            await _netUtils.SetIpAndPort(Ip, Port);
+            _netUtils.SetIpAndPort(Ip, Port);
         }
-        catch //TODO: расписать какие могут быть исключения
+        catch (Exception ex) //TODO: расписать какие могут быть исключения
         {
             IsErrorLabelEnabled = true;
+            Log.Error(ex.Message);
             ErrorLabel = "Некорректный ip-адрес или порт";
             return;
         }

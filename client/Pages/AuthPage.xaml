@@ -37,14 +37,16 @@
                 <Button
                     x:Name="LoginBtn"
                     Text="Авторизация"
-                    Command="{Binding LoginCommand}"
+                    Command="{Binding AuthCommand}"
+                    CommandParameter="login"
                     HorizontalOptions="Fill"
                     IsEnabled="{Binding IsLoginButtonEnabled}" />
 
                 <Button
                     x:Name="RegBtn"
                     Text="Регистрация"
-                    Command="{Binding RegisterCommand}"
+                    Command="{Binding AuthCommand}"
+                    CommandParameter="register"
                     HorizontalOptions="Fill"
                     IsEnabled="{Binding IsRegisterButtonEnabled}" />
             </HorizontalStackLayout>

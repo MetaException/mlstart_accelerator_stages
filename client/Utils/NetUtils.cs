@@ -1,4 +1,5 @@
 ﻿using client.Model;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http.Headers;
@@ -23,62 +24,73 @@ public class NetUtils
         _handler = new HttpClientHandler();
     }
 
-    public async Task<NetUtilsResponseCodes> Register(string username, string password)
+    public async Task<NetUtilsResponseCodes> AuthAsync(string url, string username, string password)
     {
+        if (!await CheckServerConnection())
+        {
+            return NetUtilsResponseCodes.CANTCONNECTTOTHESERVER;
+        }
+
         var newUser = new User
         {
             Login = username,
             Password = password
         };
 
-        var response = await _client.PostAsJsonAsync("api/auth/register", newUser);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var tokenResponse = JsonSerializer.Deserialize<TokenModel>(responseContent);
-            if (tokenResponse != null && !string.IsNullOrEmpty(tokenResponse.token))
+            var response = await _client.PostAsJsonAsync(url, newUser);
+
+            if (response.IsSuccessStatusCode)
             {
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.token);
-                return NetUtilsResponseCodes.OK;
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (!string.IsNullOrEmpty(responseContent))
+                {
+                    var tokenResponse = JsonSerializer.Deserialize<TokenModel>(responseContent);
+
+                    if (tokenResponse != null && !string.IsNullOrEmpty(tokenResponse.token))
+                    {
+                        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.token);
+
+                        Log.Information($"Successful authorization on {_client.BaseAddress}");
+                        return NetUtilsResponseCodes.OK;
+                    }
+                }
+            }
+            else if (response.StatusCode == HttpStatusCode.Conflict)
+            {
+                Log.Warning($"Registration failed. User is already registered on {_client.BaseAddress}");
+                return NetUtilsResponseCodes.USERISALREDYEXISTS;
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                Log.Warning($"Registration failed. Invalid login or password on {_client.BaseAddress}");
+                return NetUtilsResponseCodes.BADREQUEST;
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                Log.Warning($"Login failed. Incorrect login or password on {_client.BaseAddress}");
+                return NetUtilsResponseCodes.UNATHROIZED;
             }
         }
-        else if (response.StatusCode == HttpStatusCode.Conflict)
+        catch (Exception ex)
         {
-            return NetUtilsResponseCodes.USERISALREDYEXISTS;
+            Log.Error(ex.Message);
         }
-        else if (response.StatusCode == HttpStatusCode.BadRequest)
-        {
-            return NetUtilsResponseCodes.BADREQUEST;
-        }
+
+        Log.Warning($"Recieved error code from {_client.BaseAddress}");
         return NetUtilsResponseCodes.ERROR;
     }
 
-    public async Task<NetUtilsResponseCodes> Login(string username, string password)
+    public Task<NetUtilsResponseCodes> LoginAsync(string username, string password)
     {
-        var user = new User
-        {
-            Login = username,
-            Password = password
-        };
+        return AuthAsync("api/auth/login", username, password);
+    }
 
-        var response = await _client.PostAsJsonAsync("api/auth/login", user);
-
-        if (response.IsSuccessStatusCode)
-        {
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var tokenResponse = JsonSerializer.Deserialize<TokenModel>(responseContent);
-            if (tokenResponse != null && !string.IsNullOrEmpty(tokenResponse.token))
-            {
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.token);
-                return NetUtilsResponseCodes.OK;
-            }
-        }
-        else if (response.StatusCode == HttpStatusCode.Unauthorized)
-        {
-            return NetUtilsResponseCodes.UNATHROIZED;
-        }
-        return NetUtilsResponseCodes.ERROR;
+    public Task<NetUtilsResponseCodes> RegisterAsync(string username, string password)
+    {
+        return AuthAsync("api/auth/register", username, password);
     }
 
     public async Task<bool> CheckServerConnection()
@@ -86,17 +98,17 @@ public class NetUtils
         try
         {
             var response = await _client.GetAsync("api/health");
+            response.EnsureSuccessStatusCode();
 
-            if (response.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            return false;
+            Log.Information($"Successfully connected to {_client.BaseAddress}");
+
+            return true;
         }
-        catch
+        catch (Exception ex)
         {
-            return false;
+            Log.Error(ex.Message);
         }
+        return false;
     }
 
     public async Task<ObservableCollection<LogRecord>> GetDataAsync()
@@ -105,25 +117,29 @@ public class NetUtils
         {
             var response = await _client.GetAsync("api/data");
 
-            if (response.IsSuccessStatusCode)
+            response.EnsureSuccessStatusCode();
+
+            var logsData = await response.Content.ReadFromJsonAsync<ObservableCollection<LogRecord>>();
+
+            if (logsData is null)
             {
-                var a = await response.Content.ReadFromJsonAsync<ObservableCollection<LogRecord>>();
-                return a;
+                throw new ArgumentNullException(nameof(logsData));
             }
-            else
-            {
-                return null;
-            }
+
+            Log.Information($"Successfully received logs data from {_client.BaseAddress}");
+            return logsData;
         }
-        catch
+        catch (Exception ex)
         {
-            return null;
+            Log.Error(ex.Message);
         }
+        return null;
     }
 
-    public async Task SetIpAndPort(string ip, string port)
+    public void SetIpAndPort(string ip, string port)
     {
         // Задавать параметры можно только до отправки первого запроса
         _client = new HttpClient(_handler) { BaseAddress = new Uri($"https://{ip}:{port}") };
+        Log.Information($"Successfully changed base address to {_client.BaseAddress}");
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace client.Model;
 
-public class ResponseEnum
+public static class ResponseEnum
 {
     public enum NetUtilsResponseCodes
     {
@@ -8,6 +8,7 @@ public class ResponseEnum
         OK,
         ERROR,
         USERISALREDYEXISTS,
-        BADREQUEST
+        BADREQUEST,
+        CANTCONNECTTOTHESERVER
     }
 }

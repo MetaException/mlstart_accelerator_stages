@@ -12,130 +12,105 @@ public partial class AuthPageViewModel : ObservableObject
     public AuthPageViewModel()
     {
         _netUtils = Application.Current.Handler.MauiContext.Services.GetService<NetUtils>();
-        LoginCommand = new RelayCommand(async () => await LoginAsync());
-        RegisterCommand = new RelayCommand(async () => await RegisterAsync());
 
-        _ = CheckServerConnection();
+        AuthCommand = new RelayCommand<string>(async (authType) => await AuthAsync(authType));
     }
 
     [ObservableProperty]
-    public string _login;
+    private string _login;
 
     [ObservableProperty]
-    public string _password;
+    private string _password;
 
     [ObservableProperty]
-    public string _errorLabel;
+    private string _errorLabel;
 
     [ObservableProperty]
-    public string _welcomeLabelText = "Введите логин и пароль";
+    private string _welcomeLabelText = "Введите логин и пароль";
 
     [ObservableProperty]
-    public bool _isLoginButtonEnabled = true;
+    private bool _isLoginButtonEnabled = true;
 
     [ObservableProperty]
-    public bool _isRegisterButtonEnabled = true;
+    private bool _isRegisterButtonEnabled = true;
 
     [ObservableProperty]
-    public bool _isErrorLabelEnabled = false;
+    private bool _isErrorLabelEnabled = false;
 
-    public RelayCommand LoginCommand { get; }
-    public RelayCommand RegisterCommand { get; }
+    public RelayCommand<string> AuthCommand { get; }
 
-    private async Task<bool> CheckServerConnection()
+    private async Task AuthAsync(string authType)
     {
-        if (!await _netUtils.CheckServerConnection())
-        {
-            IsErrorLabelEnabled = true;
-            ErrorLabel = "Ошибка подключения к Серверу";
-            return false;
-        }
-        return true;
-    }
-
-    private async Task LoginAsync()
-    {
-        if (!await CheckServerConnection())
-        {
-            return;
-        }
-
         IsErrorLabelEnabled = false;
 
-        try
+        NetUtilsResponseCodes result;
+        if (authType == "login")
         {
             IsLoginButtonEnabled = false;
-            var result = await _netUtils.Login(Login, Password);
 
-            if (result == NetUtilsResponseCodes.OK)
-            {
-                await Shell.Current.GoToAsync("MainPage");
-                return;
-            }
-            else if (result == NetUtilsResponseCodes.UNATHROIZED)
-            {
-                IsErrorLabelEnabled = true;
-                ErrorLabel = "Неверный логин или пароль";
-            }
-            else
-            {
-                IsErrorLabelEnabled = true;
-                ErrorLabel = "Произошла ошибка при выполнении входа";
-            }
+            result = await _netUtils.LoginAsync(Login, Password);
         }
-        catch (Exception ex)
-        {
-            IsErrorLabelEnabled = true;
-            ErrorLabel = ex.Message;
-        }
-        finally
-        {
-            IsLoginButtonEnabled = true;
-        }
-    }
-
-    // TODO: Отедльная страница регистрации
-    private async Task RegisterAsync()
-    {
-        if (!await CheckServerConnection())
-        {
-            return;
-        }
-
-        try
+        else
         {
             IsRegisterButtonEnabled = false;
-            var result = await _netUtils.Register(Login, Password);
 
-            if (result == NetUtilsResponseCodes.OK)
+            result = await _netUtils.RegisterAsync(Login, Password);
+        }
+
+        if (result == NetUtilsResponseCodes.OK)
+        {
+            await Shell.Current.GoToAsync("MainPage");
+        }
+        else
+        {
+            IsErrorLabelEnabled = true;
+
+            if (result == NetUtilsResponseCodes.CANTCONNECTTOTHESERVER) //Переписать
             {
-                await Shell.Current.GoToAsync("MainPage");
-                return;
-            }
-            else if (result == NetUtilsResponseCodes.USERISALREDYEXISTS)
-            {
-                IsErrorLabelEnabled = true;
-                ErrorLabel = "Пользователь уже зарегистрирован";
+                ErrorLabel = "Не удалось соединиться с сервером";
             }
             else if (result == NetUtilsResponseCodes.BADREQUEST)
             {
-                IsErrorLabelEnabled = true;
                 ErrorLabel = "Некорректно введён логин или пароль";
             }
             else
             {
-                IsErrorLabelEnabled = true;
-                ErrorLabel = "Произошла ошибка при регистрации пользователя";
+                if (authType == "login")
+                {
+                    HandleLoginError(result);
+                }
+                else
+                {
+                    HandleRegisterError(result);
+                }
             }
         }
-        catch (Exception ex)
+
+        IsRegisterButtonEnabled = true;
+        IsLoginButtonEnabled = true;
+    }
+
+    private void HandleLoginError(NetUtilsResponseCodes responseCode)
+    {
+        if (responseCode == NetUtilsResponseCodes.UNATHROIZED)
         {
-            IsErrorLabelEnabled = true;
-            ErrorLabel = ex.Message;
+            ErrorLabel = "Неверный логин или пароль";
         }
-        finally
+        else if (responseCode == NetUtilsResponseCodes.ERROR)
         {
-            IsRegisterButtonEnabled = true;
+            ErrorLabel = "Произошла ошибка при выполнении входа";
+        }
+    }
+
+    private void HandleRegisterError(NetUtilsResponseCodes responseCode)
+    {
+        if (responseCode == NetUtilsResponseCodes.USERISALREDYEXISTS)
+        {
+            ErrorLabel = "Пользователь уже зарегистрирован";
+        }
+        else if (responseCode == NetUtilsResponseCodes.ERROR)
+        {
+            ErrorLabel = "Произошла ошибка при регистрации пользователя";
         }
     }
 }
