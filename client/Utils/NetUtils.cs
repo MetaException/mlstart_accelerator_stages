@@ -80,19 +80,19 @@ public class NetUtils
 
     public Task<NetUtilsResponseCodes> LoginAsync(string username, string password)
     {
-        return AuthAsync("api/auth/login", username, password);
+        return AuthAsync(ApiLinks.LoginLink, username, password);
     }
 
     public Task<NetUtilsResponseCodes> RegisterAsync(string username, string password)
     {
-        return AuthAsync("api/auth/register", username, password);
+        return AuthAsync(ApiLinks.RegisterLink, username, password);
     }
 
     public async Task<bool> CheckServerConnection()
     {
         try
         {
-            var response = await _client.GetAsync("api/health");
+            var response = await _client.GetAsync(ApiLinks.HealthLink);
             response.EnsureSuccessStatusCode();
 
             Log.Information($"Successfully connected to {_client.BaseAddress}");
@@ -110,7 +110,7 @@ public class NetUtils
     {
         try
         {
-            var response = await _client.GetAsync("api/data");
+            var response = await _client.GetAsync(ApiLinks.DataLink);
 
             response.EnsureSuccessStatusCode();
 
