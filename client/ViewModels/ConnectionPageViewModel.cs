@@ -46,7 +46,7 @@ public partial class ConnectionPageViewModel : ObservableObject
         catch (Exception ex) //TODO: расписать какие могут быть исключения
         {
             IsErrorLabelEnabled = true;
-            Log.Error(ex.Message);
+            Log.Error($"{ex.Message} ip = {Ip}, port = {Port}");
             ErrorLabel = "Некорректный ip-адрес или порт";
             return;
         }

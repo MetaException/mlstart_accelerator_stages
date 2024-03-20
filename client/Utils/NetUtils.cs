@@ -53,24 +53,24 @@ public class NetUtils
                     {
                         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.token);
 
-                        Log.Information($"Successful authorization on {_client.BaseAddress}");
+                        Log.Information($"Successfull authorization on {response.RequestMessage.RequestUri.AbsoluteUri}");
                         return NetUtilsResponseCodes.OK;
                     }
                 }
             }
             else if (response.StatusCode == HttpStatusCode.Conflict)
             {
-                Log.Warning($"Registration failed. User is already registered on {_client.BaseAddress}");
+                Log.Warning($"Registration failed. User is already registered on {response.RequestMessage.RequestUri.AbsoluteUri}");
                 return NetUtilsResponseCodes.USERISALREDYEXISTS;
             }
             else if (response.StatusCode == HttpStatusCode.BadRequest)
             {
-                Log.Warning($"Registration failed. Invalid login or password on {_client.BaseAddress}");
+                Log.Warning($"Registration failed. Invalid login or password on {response.RequestMessage.RequestUri.AbsoluteUri}");
                 return NetUtilsResponseCodes.BADREQUEST;
             }
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                Log.Warning($"Login failed. Incorrect login or password on {_client.BaseAddress}");
+                Log.Warning($"Login failed. Incorrect login or password on {response.RequestMessage.RequestUri.AbsoluteUri}");
                 return NetUtilsResponseCodes.UNATHROIZED;
             }
         }
@@ -100,7 +100,7 @@ public class NetUtils
             var response = await _client.GetAsync(ApiLinks.HealthLink);
             response.EnsureSuccessStatusCode();
 
-            Log.Information($"Successfully connected to {_client.BaseAddress}");
+            Log.Information($"Successfully connected to {response.RequestMessage.RequestUri.AbsoluteUri}");
 
             return true;
         }
@@ -126,7 +126,7 @@ public class NetUtils
                 throw new ArgumentNullException(nameof(logsData));
             }
 
-            Log.Information($"Successfully received logs data from {_client.BaseAddress}");
+            Log.Information($"Successfully received data ({response.Content.Headers.ContentLength} bytes) from {response.RequestMessage.RequestUri.AbsoluteUri}");
             return logsData;
         }
         catch (Exception ex)
