@@ -9,5 +9,10 @@ namespace client.Pages
             InitializeComponent();
             this.BindingContext = viewModel;
         }
+
+        private void ContentPage_NavigatedFrom(object sender, NavigatedFromEventArgs e)
+        {
+            ((MainPageViewModel)BindingContext).NavigatedFromPageCommand.Execute(null);
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace server
 
             _ = Simulator.SimulateLoop();
 
-            _ = CheckDatabaseConnection(app);
+            _ = CheckDatabaseConnection(app); //Вызовет краш когда установленный порт занят
 
             app.Run();
         }
@@ -175,7 +175,7 @@ namespace server
                 }
                 else
                 {
-                    Log.Error("Can't connect to the database server");
+                    Log.Error("Can't connected to the database server");
                 }
             }
         }
