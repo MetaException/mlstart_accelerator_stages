@@ -1,7 +1,6 @@
 ﻿using client.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Serilog;
 
 namespace client.ViewModels;
 
@@ -39,19 +38,13 @@ public partial class ConnectionPageViewModel : ObservableObject
     {
         IsErrorLabelEnabled = false;
 
-        try
-        {
-            _netUtils.SetIpAndPort(Ip, Port);
-        }
-        catch (Exception ex) //TODO: расписать какие могут быть исключения
+        if (!_netUtils.SetIpAndPort(Ip, Port))
         {
             IsErrorLabelEnabled = true;
-            Log.Error($"{ex.Message} ip = {Ip}, port = {Port}");
             ErrorLabel = "Некорректный ip-адрес или порт";
-            return;
         }
 
-        bool result = await _netUtils.CheckServerConnection(); ;
+        bool result = await _netUtils.CheckServerConnection();
         if (result) // Подключено успешно
         {
             await Shell.Current.GoToAsync("AuthPage");

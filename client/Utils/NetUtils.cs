@@ -136,10 +136,20 @@ public class NetUtils
         return null;
     }
 
-    public void SetIpAndPort(string ip, string port)
+    public bool SetIpAndPort(string ip, string port)
     {
-        // Задавать параметры можно только до отправки первого запроса
-        _client = new HttpClient(_handler) { BaseAddress = new Uri($"https://{ip}:{port}") };
-        Log.Information($"Successfully changed base address to {_client.BaseAddress}");
+        try
+        {
+            // Задавать параметры можно только до отправки первого запроса
+            _client = new HttpClient(_handler) { BaseAddress = new Uri($"https://{ip}:{port}") };
+            Log.Information($"Successfully changed base address to {_client.BaseAddress}");
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"{ex.Message} ip = {ip}, port = {port}");
+        }
+        return false;
     }
 }

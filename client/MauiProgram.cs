@@ -9,7 +9,7 @@ namespace client
 {
     public static class MauiProgram
     {
-       private static string СlientHash = Guid.NewGuid().ToString();
+        private static string СlientId = Guid.NewGuid().ToString();
 
         public static MauiApp CreateMauiApp()
         {
@@ -46,7 +46,7 @@ namespace client
         {
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .Enrich.WithProperty("ClientHash", СlientHash) 
+                .Enrich.WithProperty("ClientHash", СlientId) 
 
                 .WriteTo.Logger(l => l
                     .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug)

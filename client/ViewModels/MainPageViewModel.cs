@@ -9,7 +9,7 @@ namespace client.ViewModels;
 public partial class MainPageViewModel : ObservableObject
 {
     private readonly NetUtils _netUtils;
-    private CancellationTokenSource _cancellationTokenSource;
+    private readonly CancellationTokenSource _cancellationTokenSource;
 
     [ObservableProperty]
     private ObservableCollection<LogRecord> _logsList;
