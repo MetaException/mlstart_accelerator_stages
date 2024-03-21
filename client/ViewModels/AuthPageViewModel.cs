@@ -9,9 +9,9 @@ public partial class AuthPageViewModel : ObservableObject
 {
     private readonly NetUtils _netUtils;
 
-    public AuthPageViewModel()
+    public AuthPageViewModel(NetUtils netUtils)
     {
-        _netUtils = Application.Current.Handler.MauiContext.Services.GetService<NetUtils>();
+        _netUtils = netUtils;
 
         AuthCommand = new RelayCommand<string>(async (authType) => await AuthAsync(authType));
     }

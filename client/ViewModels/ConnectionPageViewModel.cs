@@ -9,9 +9,9 @@ public partial class ConnectionPageViewModel : ObservableObject
 {
     private readonly NetUtils _netUtils;
 
-    public ConnectionPageViewModel()
+    public ConnectionPageViewModel(NetUtils netUtils)
     {
-        _netUtils = Application.Current.Handler.MauiContext.Services.GetService<NetUtils>();
+        _netUtils = netUtils;
         ConnectCommand = new RelayCommand(async () => await ConnectAsync());
     }
 
