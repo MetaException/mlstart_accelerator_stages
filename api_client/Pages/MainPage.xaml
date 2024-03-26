@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="apiclient.Pages.MainPage"
+             NavigatedFrom="ContentPage_NavigatedFrom">
+
+    <Shell.TitleView>
+        <Label Text="Логи" FontSize="Title" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+    </Shell.TitleView>
+
+    <Grid VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" x:Name="internetError" IsVisible="{Binding IsInternetErrorVisible}" StrokeThickness="1" BackgroundColor="OrangeRed">
+            <Label Text="Потеряно соединение сервером" VerticalOptions="Start" HorizontalTextAlignment="Center" VerticalTextAlignment="Start" />
+        </Border>
+
+        <Grid Grid.Row="1" x:Name="contentGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <CollectionView Grid.Row="0" x:Name="logsTable" ItemsSource="{Binding LogsList}" ItemsLayout="VerticalList" VerticalScrollBarVisibility="Always" ItemsUpdatingScrollMode="KeepLastItemInView">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Message}" FontSize="Medium" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </Grid>
+</ContentPage>

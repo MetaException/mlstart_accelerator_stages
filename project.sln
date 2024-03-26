@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "client", "client\client.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "server", "server\server.csproj", "{0B626EC3-511A-43CA-A968-74ECB6D32ABA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api_client", "api_client\api_client.csproj", "{8DA7628A-7764-4F53-BE86-B5ACFB1F4BAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,12 @@ Global
 		{0B626EC3-511A-43CA-A968-74ECB6D32ABA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B626EC3-511A-43CA-A968-74ECB6D32ABA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B626EC3-511A-43CA-A968-74ECB6D32ABA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DA7628A-7764-4F53-BE86-B5ACFB1F4BAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DA7628A-7764-4F53-BE86-B5ACFB1F4BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DA7628A-7764-4F53-BE86-B5ACFB1F4BAF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8DA7628A-7764-4F53-BE86-B5ACFB1F4BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DA7628A-7764-4F53-BE86-B5ACFB1F4BAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DA7628A-7764-4F53-BE86-B5ACFB1F4BAF}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
