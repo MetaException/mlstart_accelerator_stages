@@ -47,7 +47,7 @@ public partial class ConnectionPageViewModel : ObservableObject
         bool result = await _netUtils.CheckServerConnection();
         if (result) // Подключено успешно
         {
-            await Shell.Current.GoToAsync("AuthPage");
+            await Shell.Current.GoToAsync("MainPage");
         }
         else
         {
