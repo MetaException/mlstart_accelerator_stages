@@ -1,57 +1,37 @@
-﻿using apiclient.Model;
-using apiclient.Utils;
+﻿using apiclient.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
 
 namespace apiclient.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject
 {
     private readonly NetUtils _netUtils;
-    private readonly CancellationTokenSource _cancellationTokenSource;
-
-    [ObservableProperty]
-    private ObservableCollection<LogRecord> _logsList;
 
     [ObservableProperty]
     private bool _isInternetErrorVisible;
 
-    public RelayCommand NavigatedFromPageCommand { get; }
+    public RelayCommand UploadButtonClickedCommand { get; }
 
     public MainPageViewModel(NetUtils netUtils)
     {
         _netUtils = netUtils;
 
-        _cancellationTokenSource = new CancellationTokenSource();
-
-        NavigatedFromPageCommand = new RelayCommand(NavigatedFromPage);
-
-        _ = GetDataAsync(_cancellationTokenSource.Token);
+        UploadButtonClickedCommand = new RelayCommand(async () => await UploadButtonClicked());
     }
 
-    private async Task GetDataAsync(CancellationToken cancellationToken)
+    private async Task UploadButtonClicked()
     {
-        while (!cancellationToken.IsCancellationRequested)
+        var results = await FilePicker.PickMultipleAsync(new PickOptions
         {
-            var recievedData = await _netUtils.GetDataAsync();
+            PickerTitle = "Выбирите изображения",
+            FileTypes = FilePickerFileType.Images
+        });
 
-            if (recievedData is not null)
-            {
-                IsInternetErrorVisible = false;
-                LogsList = recievedData;
-            }
-            else
-            {
-                IsInternetErrorVisible = true;
-            }
-            await Task.Delay(TimeSpan.FromSeconds(1));
+        foreach (var result in results)
+        {
+            var fileStream = await result.OpenReadAsync();
+            var details = await _netUtils.SendImageAsync(fileStream, result.FileName);
         }
     }
-
-    private void NavigatedFromPage()
-    {
-        _cancellationTokenSource.Cancel();
-    }
-
 }

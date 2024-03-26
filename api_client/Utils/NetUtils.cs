@@ -1,6 +1,5 @@
 ﻿using apiclient.Model;
 using Serilog;
-using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -111,23 +110,18 @@ public class NetUtils
         return false;
     }
 
-    public async Task<ObservableCollection<LogRecord>> GetDataAsync()
+    public async Task<ImageInfo> SendImageAsync(Stream fileStream, string fileName)
     {
         try
         {
-            var response = await _client.GetAsync(ApiLinks.DataLink);
-
-            response.EnsureSuccessStatusCode();
-
-            var logsData = await response.Content.ReadFromJsonAsync<ObservableCollection<LogRecord>>();
-
-            if (logsData is null)
+            var content = new MultipartFormDataContent
             {
-                throw new ArgumentNullException(nameof(logsData));
-            }
+                { new StreamContent(fileStream), "image", fileName}
+            };
 
-            Log.Information($"Successfully received data ({response.Content.Headers.ContentLength} bytes) from {response.RequestMessage.RequestUri.AbsoluteUri}");
-            return logsData;
+            var response = await _client.PostAsync(ApiLinks.DataLink, content);
+
+            return await response.Content.ReadFromJsonAsync<ImageInfo>();
         }
         catch (Exception ex)
         {
