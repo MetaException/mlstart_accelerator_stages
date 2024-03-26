@@ -141,7 +141,7 @@ public class NetUtils
         try
         {
             // Задавать параметры можно только до отправки первого запроса
-            _client = new HttpClient(_handler) { BaseAddress = new Uri($"https://{ip}:{port}") };
+            _client = new HttpClient(_handler) { BaseAddress = new Uri($"http://{ip}:{port}") };
             Log.Information($"Successfully changed base address to {_client.BaseAddress}");
 
             return true;
