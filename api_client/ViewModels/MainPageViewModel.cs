@@ -3,6 +3,7 @@ using apiclient.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using Serilog;
 
 namespace apiclient.ViewModels;
 
@@ -11,7 +12,7 @@ public partial class MainPageViewModel : ObservableObject
     public class Item
     {
         public ImageSource ItemImageSource { get; set; }
-        public FileResult FilePath { get; set; }
+        public string FilePath { get; set; }
         public ImageInfo ImageInfo { get; set; }
     }
 
@@ -61,7 +62,7 @@ public partial class MainPageViewModel : ObservableObject
 
     private async Task SelectionChangedHandler(Item item)
     {
-        ImgSource = ImageSource.FromFile(item.FilePath.FullPath);
+        ImgSource = ImageSource.FromFile(item.FilePath);
 
         if (IsImageDetailsVisible = item.ImageInfo is not null)
         {
@@ -82,14 +83,12 @@ public partial class MainPageViewModel : ObservableObject
         if (!results.Any())
             return;
 
-        ImgSource = ImageSource.FromFile(results.First().FullPath);
-
         foreach (var file in results)
         {
-            Imgs.Add(new Item { ItemImageSource = ImageSource.FromFile(file.FullPath), FilePath = file });
+            Imgs.Add(new Item { ItemImageSource = ImageSource.FromFile(file.FullPath), FilePath = file.FullPath}); //TODO: сжимать фото для миниатюр
         }
 
-        SelectedItem = Imgs.Last();
+        SelectedItem = Imgs[^1];
 
         IsUploadButtonVisible = true;
     }
@@ -99,17 +98,27 @@ public partial class MainPageViewModel : ObservableObject
         if (SelectedItem is null)
             return;
 
-        var result = SelectedItem.FilePath;
+        try
+        {
+            var fileStream = File.OpenRead(SelectedItem.FilePath); //TODO: Вынести работу с файлами в отедельный класс
 
-        var fileStream = await result.OpenReadAsync();
+            var details = await _netUtils.SendImageAsync(fileStream, Path.GetFileName(SelectedItem.FilePath));
 
-        var details = await _netUtils.SendImageAsync(fileStream, result.FileName);
+            if (details is null)
+            {
+                throw new ArgumentNullException();
+            }
 
-        ImageWidth = $"Ширина: {details.width}";
-        ImageHeight = $"Высота: {details.height}";
-        ImageChannels = $"Количество каналов: {details.channels}";
+            ImageWidth = $"Ширина: {details.width}";
+            ImageHeight = $"Высота: {details.height}";
+            ImageChannels = $"Количество каналов: {details.channels}";
 
-        SelectedItem.ImageInfo = details;
-        IsImageDetailsVisible = true;
+            SelectedItem.ImageInfo = details;
+            IsImageDetailsVisible = true;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+        }
     }
 }
