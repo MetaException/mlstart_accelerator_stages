@@ -1,4 +1,5 @@
-﻿using apiclient.Utils;
+﻿using apiclient.Model;
+using apiclient.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -11,6 +12,7 @@ public partial class MainPageViewModel : ObservableObject
     {
         public ImageSource ItemImageSource { get; set; }
         public FileResult FilePath { get; set; }
+        public ImageInfo ImageInfo { get; set; }
     }
 
     private readonly NetUtils _netUtils;
@@ -39,6 +41,9 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private bool _isUploadButtonVisible = false;
 
+    [ObservableProperty]
+    private bool _isImageDetailsVisible = false;
+
     public RelayCommand UploadButtonClickedCommand { get; }
 
     public RelayCommand OpenFileCommand { get; }
@@ -57,6 +62,13 @@ public partial class MainPageViewModel : ObservableObject
     private async Task SelectionChangedHandler(Item item)
     {
         ImgSource = ImageSource.FromFile(item.FilePath.FullPath);
+
+        if (IsImageDetailsVisible = item.ImageInfo is not null)
+        {
+            ImageWidth = $"Ширина: {item.ImageInfo.width}";
+            ImageHeight = $"Высота: {item.ImageInfo.height}";
+            ImageChannels = $"Количество каналов: {item.ImageInfo.channels}";
+        }
     }
 
     private async Task OpenFile()
@@ -96,5 +108,8 @@ public partial class MainPageViewModel : ObservableObject
         ImageWidth = $"Ширина: {details.width}";
         ImageHeight = $"Высота: {details.height}";
         ImageChannels = $"Количество каналов: {details.channels}";
+
+        SelectedItem.ImageInfo = details;
+        IsImageDetailsVisible = true;
     }
 }
