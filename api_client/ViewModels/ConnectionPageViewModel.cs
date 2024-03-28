@@ -37,6 +37,7 @@ public partial class ConnectionPageViewModel : ObservableObject
     private async Task ConnectAsync()
     {
         IsErrorLabelEnabled = false;
+        IsConnectButtonEnabled = false;
 
         if (!_netUtils.SetIpAndPort(Ip, Port))
         {
@@ -54,5 +55,6 @@ public partial class ConnectionPageViewModel : ObservableObject
             IsErrorLabelEnabled = true;
             ErrorLabel = "Ошибка подключения к серверу";
         }
+        IsConnectButtonEnabled = true;
     }
 }
